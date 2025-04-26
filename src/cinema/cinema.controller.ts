@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CinemaService } from './cinema.service';
 import { CreateCinemaDto } from './dto/create-cinema.dto';
@@ -16,7 +17,7 @@ export class CinemaController {
   constructor(private readonly cinemaService: CinemaService) {}
 
   @Post()
-  create(@Body() createCinemaDto: CreateCinemaDto) {
+  create(@Body(ValidationPipe) createCinemaDto: CreateCinemaDto) {
     return this.cinemaService.create(createCinemaDto);
   }
 
@@ -31,7 +32,10 @@ export class CinemaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCinemaDto: UpdateCinemaDto) {
+  update(
+    @Param('id') id: string,
+    @Body(ValidationPipe) updateCinemaDto: UpdateCinemaDto,
+  ) {
     return this.cinemaService.update(+id, updateCinemaDto);
   }
 
