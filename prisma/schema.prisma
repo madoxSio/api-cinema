@@ -13,21 +13,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model CinemaHall {
-  id                Int               @id @default(autoincrement())
+model MovieTheater {
+  id                Int                 @id @default(autoincrement())
   description       String
   name              String
-  photos            CinemaHallPhoto[]
+  photos            MovieTheaterPhoto[]
   type              String
   capacity          Int
-  hasDisabledAccess Boolean           @default(false)
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
+  hasDisabledAccess Boolean             @default(false)
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
 }
 
-model CinemaHallPhoto {
-  id           Int        @id @default(autoincrement())
-  url          String
-  cinemaHallId Int
-  cinemaHall   CinemaHall @relation(fields: [cinemaHallId], references: [id])
+model MovieTheaterPhoto {
+  id             Int          @id @default(autoincrement())
+  url            String
+  movieTheaterId Int
+  movieTheater   MovieTheater @relation(fields: [movieTheaterId], references: [id])
 }

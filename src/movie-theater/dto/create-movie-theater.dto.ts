@@ -10,19 +10,19 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class CreateCinemaDto {
-  @ApiProperty({ example: 'Cinema de Paris' })
+export class CreateMovieTheaterDto {
+  @ApiProperty({ example: 'Salle Magelan' })
   @IsString()
   @MinLength(3)
   name: string;
 
-  @ApiProperty({ example: 'Le cinema de Paris est un cinema magnifique' })
+  @ApiProperty({ example: 'La salle Magelan composé de fauteuils éléctrique' })
   @IsString()
   @MinLength(10)
   description: string;
 
   @ApiProperty({
-    description: 'Liste des url des photos du cinema',
+    description: 'Liste des url des photos de la salle',
     example: [
       'https://example.com/photo1.jpg',
       'https://example.com/photo2.jpg',

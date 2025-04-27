@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { HelloModule } from './hello-test/hello.module';
-import { CinemaModule } from './cinema/cinema.module';
+import { MovieTheaterModule } from './movie-theater/movie-theater.module';
 
 @Module({
-  imports: [HelloModule, CinemaModule],
+  imports: [HelloModule, MovieTheaterModule],
 })
 export class AppModule {}
