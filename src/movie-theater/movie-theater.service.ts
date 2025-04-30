@@ -54,11 +54,58 @@ export class MovieTheaterService {
     });
   }
 
-  update(id: number, updateMovieTheaterDto: UpdateMovieTheaterDto) {
-    return `This action updates a #${id} movie theater`;
+  async update(id: number, updateMovieTheaterDto: UpdateMovieTheaterDto) {
+    this.logger.log(`Updating movie theater hall with ID: ${id}`);
+    this.logger.debug(
+      `Received data: ${JSON.stringify(updateMovieTheaterDto)}`,
+    );
+
+    const { photos, ...movieTheaterData } = updateMovieTheaterDto;
+    await this.prisma.movieTheater.update({
+      where: { id },
+      data: movieTheaterData,
+    });
+
+    if (photos) {
+      await this.prisma.movieTheaterPhoto.deleteMany({
+        where: { movieTheaterId: id },
+      });
+
+      await this.prisma.movieTheaterPhoto.createMany({
+        data: photos.map((photo) => ({
+          movieTheaterId: id,
+          url: photo,
+        })),
+      });
+    }
+
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} movie theater`;
+  async remove(id: number) {
+    this.logger.log(`Removing movie theater hall with ID: ${id}`);
+
+    const movieTheater = await this.prisma.movieTheater.findUnique({
+      where: { id },
+    });
+
+    const movieTheaterPhotos = await this.prisma.movieTheaterPhoto.findMany({
+      where: { movieTheaterId: id },
+    });
+
+    if (!movieTheater) {
+      this.logger.warn(`Movie theater hall with ID: ${id} not found`);
+      return null;
+    }
+
+    if (movieTheaterPhotos) {
+      await this.prisma.movieTheaterPhoto.deleteMany({
+        where: { movieTheaterId: id },
+      });
+    }
+
+    return this.prisma.movieTheater.delete({
+      where: { id },
+    });
   }
 }
