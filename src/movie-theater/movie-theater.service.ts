@@ -36,22 +36,41 @@ export class MovieTheaterService {
   async findAll() {
     this.logger.log('Fetching all movie theater halls');
 
-    return await this.prisma.movieTheater.findMany({
+    const movieTheaters = await this.prisma.movieTheater.findMany({
       include: {
         photos: true,
       },
     });
+
+    const result = movieTheaters.map((movieTheater) => ({
+      ...movieTheater,
+      photos: movieTheater.photos.map((photo) => photo.url),
+    }));
+
+    return result;
   }
 
   async findOne(id: number) {
     this.logger.log(`Fetching movie theater hall with ID: ${id}`);
 
-    return await this.prisma.movieTheater.findUnique({
+    const movieTheater = await this.prisma.movieTheater.findUnique({
       where: { id },
       include: {
         photos: true,
       },
     });
+
+    if (!movieTheater) {
+      this.logger.warn(`Movie theater hall with ID: ${id} not found`);
+      return null;
+    }
+
+    const result = {
+      ...movieTheater,
+      photos: movieTheater.photos.map((photo) => photo.url),
+    };
+
+    return result;
   }
 
   async update(id: number, updateMovieTheaterDto: UpdateMovieTheaterDto) {
