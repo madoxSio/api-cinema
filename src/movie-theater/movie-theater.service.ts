@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateMovieTheaterDto as CreateMovieTheaterDto } from './dto/create-movie-theater.dto';
 import { UpdateMovieTheaterDto as UpdateMovieTheaterDto } from './dto/update-movie-theater.dto';
 import { PrismaService } from 'src/prisma.service';
@@ -47,6 +47,11 @@ export class MovieTheaterService {
       photos: movieTheater.photos.map((photo) => photo.url),
     }));
 
+    if (result.length === 0) {
+      this.logger.warn('No movie theater halls found');
+      throw new NotFoundException('Aucune salle de cinéma trouvée');
+    }
+
     return result;
   }
 
@@ -62,7 +67,9 @@ export class MovieTheaterService {
 
     if (!movieTheater) {
       this.logger.warn(`Movie theater hall with ID: ${id} not found`);
-      return null;
+      throw new NotFoundException(
+        `Salle de cinéma avec l'ID ${id} non trouvée`,
+      );
     }
 
     const result = {
@@ -80,6 +87,18 @@ export class MovieTheaterService {
     );
 
     const { photos, ...movieTheaterData } = updateMovieTheaterDto;
+
+    const movieTheater = await this.prisma.movieTheater.findUnique({
+      where: { id },
+    });
+
+    if (!movieTheater) {
+      this.logger.warn(`Movie theater hall with ID: ${id} not found`);
+      throw new NotFoundException(
+        `Salle de cinéma avec l'ID ${id} non trouvée`,
+      );
+    }
+
     await this.prisma.movieTheater.update({
       where: { id },
       data: movieTheaterData,

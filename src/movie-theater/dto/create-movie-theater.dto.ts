@@ -1,3 +1,4 @@
+import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -47,5 +48,11 @@ export class CreateMovieTheaterDto {
 
   @ApiProperty({ example: true })
   @IsBoolean()
+  @Optional()
   hasDisabledAccess: boolean;
+
+  @ApiProperty({ example: true })
+  @IsBoolean()
+  @Optional()
+  isUnderMaintenance: boolean;
 }
