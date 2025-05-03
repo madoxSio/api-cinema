@@ -4,12 +4,12 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { v4 as uuidv4 } from 'uuid';
-import { PrismaService } from 'src/prisma.service';
-import { User } from 'src/users/entities/user.entity';
+import { PrismaService } from '../prisma.service';
+import { User } from '../users/entities/user.entity';
 import { add } from 'date-fns';
 
 @Injectable()
