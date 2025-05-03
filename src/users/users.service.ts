@@ -1,19 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
+import { Role } from '@prisma/client';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  private readonly logger = new Logger(UsersService.name);
+
+  constructor(private prisma: PrismaService) {}
+
+  async create(createUserDto: CreateUserDto) {
+    this.logger.log('Creating user', createUserDto);
+
+    return await this.prisma.user.create({
+      data: {
+        email: createUserDto.email,
+        password: createUserDto.password,
+      },
+    });
   }
 
   findAll() {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    this.logger.log('Finding user by id', id);
+    return await this.prisma.user.findUnique({
+      where: { id },
+    });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -24,14 +41,10 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  findByEmail(email: string) {
-    return new Promise((resolve) => {
-      resolve({
-        id: '1',
-        email: email,
-        password: 'hashedpassword',
-        role: 'user',
-      });
+  async findByEmail(email: string) {
+    this.logger.log('Finding user by email', email);
+    return await this.prisma.user.findUnique({
+      where: { email },
     });
   }
 }
