@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt.guard';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -26,8 +27,8 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Request() req) {
-    console.log('Logout user', req);
+  async logout(@Request() req: Request & { user: JwtPayload }) {
+    console.log('Logout user', req.user);
     return this.authService.logout(req.user.sub);
   }
 }

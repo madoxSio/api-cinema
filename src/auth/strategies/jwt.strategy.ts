@@ -1,21 +1,24 @@
-/* eslint-disable @typescript-eslint/require-await */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { ExtractJwt, Strategy as JwtStrategyBase } from 'passport-jwt';
+import { ExtractJwt, Strategy } from 'passport-jwt';
+import { JwtPayload } from '../interfaces/jwt-payload.interface';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(JwtStrategyBase) {
+export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
+    const jwtSecret = process.env.JWT_ACCESS_SECRET;
+
+    if (!jwtSecret) {
+      throw new Error('JWT_ACCESS_SECRET is not defined');
+    }
+
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.JWT_ACCESS_SECRET,
+      secretOrKey: jwtSecret,
     });
   }
 
-  async validate(payload: any) {
+  validate(payload: JwtPayload) {
     return { sub: payload.sub, role: payload.role };
   }
 }

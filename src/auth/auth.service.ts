@@ -75,6 +75,8 @@ export class AuthService {
 
   async logout(userId: string) {
     await this.prisma.refreshToken.deleteMany({ where: { userId } });
+
+    return { message: 'Logged out successfully' };
   }
 
   async register(dto: { email: string; password: string }) {
