@@ -49,10 +49,10 @@ export class CreateMovieTheaterDto {
   @ApiProperty({ example: true })
   @IsBoolean()
   @IsOptional()
-  hasDisabledAccess: boolean;
+  hasDisabledAccess?: boolean;
 
   @ApiProperty({ example: true })
   @IsBoolean()
   @IsOptional()
-  isUnderMaintenance: boolean;
+  isUnderMaintenance?: boolean;
 }

@@ -21,10 +21,12 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Cinema API')
     .setDescription('API of the cinema')
     .setVersion('1.0')
     .build();
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 

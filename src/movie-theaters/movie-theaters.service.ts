@@ -4,8 +4,8 @@ import { UpdateMovieTheaterDto as UpdateMovieTheaterDto } from './dto/update-mov
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
-export class MovieTheaterService {
-  private readonly logger = new Logger(MovieTheaterService.name);
+export class MovieTheatersService {
+  private readonly logger = new Logger(MovieTheatersService.name);
 
   constructor(private prisma: PrismaService) {}
 

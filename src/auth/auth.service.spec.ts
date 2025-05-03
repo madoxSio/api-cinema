@@ -4,6 +4,7 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma.service';
 import * as bcrypt from 'bcryptjs';
+import { RegisterDto } from './dto/register.dto';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -33,7 +34,12 @@ describe('AuthService', () => {
 
     prismaService = {
       refreshToken: {
-        create: jest.fn(),
+        create: jest.fn().mockResolvedValue({
+          id: 'refresh-token-id',
+          token: 'mock-refresh-token',
+          userId: 'user-id',
+          expiresAt: new Date(),
+        }),
       },
     };
 
@@ -70,5 +76,22 @@ describe('AuthService', () => {
     const tokens = await service.login(user);
     expect(tokens.accessToken).toBeDefined();
     expect(tokens.refreshToken).toBeDefined();
+  });
+
+  it('should hash the password before register', async () => {
+    const dto: RegisterDto = {
+      email: 'test@test.com',
+      password: 'password',
+    };
+    const createUserSpy = jest.spyOn(usersService, 'create');
+
+    await service.register(dto);
+
+    expect(createUserSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        email: dto.email,
+        password: expect.not.stringMatching(dto.password) as unknown as string,
+      }),
+    );
   });
 });

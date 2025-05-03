@@ -1,4 +1,5 @@
 import {
+  ConflictException,
   Injectable,
   Logger,
   NotFoundException,
@@ -11,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PrismaService } from '../prisma.service';
 import { User } from '../users/entities/user.entity';
 import { add } from 'date-fns';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class AuthService {
@@ -31,6 +33,8 @@ export class AuthService {
   }
 
   async login(user: User) {
+    this.logger.log('Logging in user', user.email);
+
     const payload = { sub: user.id, role: user.role };
     const accessToken = await this.jwtService.signAsync(payload, {
       secret: process.env.JWT_ACCESS_SECRET,
@@ -57,6 +61,8 @@ export class AuthService {
   }
 
   async refresh(token: string) {
+    this.logger.log('Refreshing token', token);
+
     const stored = await this.prisma.refreshToken.findUnique({
       where: { token },
     });
@@ -74,16 +80,32 @@ export class AuthService {
   }
 
   async logout(userId: string) {
+    this.logger.log('Logout user', userId);
     await this.prisma.refreshToken.deleteMany({ where: { userId } });
 
     return { message: 'Logged out successfully' };
   }
 
-  async register(dto: { email: string; password: string }) {
-    const hash = await bcrypt.hash(dto.password, 10);
-    return this.usersService.create({
-      email: dto.email,
-      password: hash,
-    });
+  async register(createUserDto: { email: string; password: string }) {
+    this.logger.log('Registering user', createUserDto.email);
+
+    try {
+      const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+      return await this.usersService.create({
+        ...createUserDto,
+        password: hashedPassword,
+      });
+    } catch (error) {
+      if (
+        error instanceof PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        this.logger.warn('Email already exists');
+        throw new ConflictException('Email already exists');
+      }
+
+      throw error;
+    }
   }
 }

@@ -9,29 +9,29 @@ import {
   ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
-import { MovieTheaterService } from './movie-theater.service';
+import { MovieTheatersService } from './movie-theaters.service';
 import { CreateMovieTheaterDto } from './dto/create-movie-theater.dto';
 import { UpdateMovieTheaterDto } from './dto/update-movie-theater.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @UseGuards(JwtAuthGuard)
-@Controller('movie-theater')
-export class MovieTheaterController {
-  constructor(private readonly movieTheaterService: MovieTheaterService) {}
+@Controller('movie-theaters')
+export class MovieTheatersController {
+  constructor(private readonly movieTheatersService: MovieTheatersService) {}
 
   @Post()
   create(@Body(ValidationPipe) createMovieTheaterDto: CreateMovieTheaterDto) {
-    return this.movieTheaterService.create(createMovieTheaterDto);
+    return this.movieTheatersService.create(createMovieTheaterDto);
   }
 
   @Get()
   findAll() {
-    return this.movieTheaterService.findAll();
+    return this.movieTheatersService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.movieTheaterService.findOne(+id);
+    return this.movieTheatersService.findOne(+id);
   }
 
   @Patch(':id')
@@ -39,11 +39,11 @@ export class MovieTheaterController {
     @Param('id') id: string,
     @Body(ValidationPipe) updateMovieTheaterDto: UpdateMovieTheaterDto,
   ) {
-    return this.movieTheaterService.update(+id, updateMovieTheaterDto);
+    return this.movieTheatersService.update(+id, updateMovieTheaterDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.movieTheaterService.remove(+id);
+    return this.movieTheatersService.remove(+id);
   }
 }
