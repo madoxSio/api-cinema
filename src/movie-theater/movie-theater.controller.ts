@@ -7,11 +7,14 @@ import {
   Param,
   Delete,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { MovieTheaterService } from './movie-theater.service';
 import { CreateMovieTheaterDto } from './dto/create-movie-theater.dto';
 import { UpdateMovieTheaterDto } from './dto/update-movie-theater.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('movie-theater')
 export class MovieTheaterController {
   constructor(private readonly movieTheaterService: MovieTheaterService) {}

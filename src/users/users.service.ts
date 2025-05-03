@@ -1,8 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
-import { Role } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -23,7 +21,8 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    this.logger.log('Finding all users');
+    return this.prisma.user.findMany();
   }
 
   async findOne(id: string) {
@@ -33,12 +32,19 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  update(id: string, updateUserDto: UpdateUserDto) {
+    this.logger.log('Updating user', { id, updateUserDto });
+    return this.prisma.user.update({
+      where: { id },
+      data: updateUserDto,
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id: string) {
+    this.logger.log('Removing user', id);
+    return this.prisma.user.delete({
+      where: { id },
+    });
   }
 
   async findByEmail(email: string) {

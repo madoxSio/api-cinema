@@ -1,10 +1,10 @@
-import { Optional } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
   IsNumber,
+  IsOptional,
   IsString,
   Max,
   Min,
@@ -48,11 +48,11 @@ export class CreateMovieTheaterDto {
 
   @ApiProperty({ example: true })
   @IsBoolean()
-  @Optional()
+  @IsOptional()
   hasDisabledAccess: boolean;
 
   @ApiProperty({ example: true })
   @IsBoolean()
-  @Optional()
+  @IsOptional()
   isUnderMaintenance: boolean;
 }
