@@ -1,4 +1,4 @@
-import { ApiProperty, ApiResponse, ApiResponseProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsStrongPassword } from 'class-validator';
 
 export class RegisterDto {

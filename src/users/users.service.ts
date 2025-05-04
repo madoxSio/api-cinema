@@ -1,7 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from '../prisma.service';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -20,29 +21,68 @@ export class UsersService {
     });
   }
 
-  findAll() {
+  async findAll() {
     this.logger.log('Finding all users');
-    return this.prisma.user.findMany();
+    return await this.prisma.user.findMany();
   }
 
   async findOne(id: string) {
     this.logger.log('Finding user by id', id);
-    return await this.prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id },
     });
+
+    if (!user) {
+      this.logger.warn('User not found', id);
+      throw new NotFoundException('User not found');
+    }
+    return user;
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     this.logger.log('Updating user', { id, updateUserDto });
-    return this.prisma.user.update({
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      this.logger.warn('User not found', id);
+      throw new NotFoundException('User not found');
+    }
+
+    if (updateUserDto.email) {
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email: updateUserDto.email },
+      });
+      if (existingUser && existingUser.id !== id) {
+        this.logger.warn('Email already in use', updateUserDto.email);
+        throw new NotFoundException('Email already in use');
+      }
+    }
+
+    if (updateUserDto.password) {
+      updateUserDto.password = await bcrypt.hash(updateUserDto.password, 10);
+    }
+
+    return await this.prisma.user.update({
       where: { id },
       data: updateUserDto,
     });
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     this.logger.log('Removing user', id);
-    return this.prisma.user.delete({
+
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      this.logger.warn('User not found', id);
+      throw new NotFoundException('User not found');
+    }
+
+    return await this.prisma.user.delete({
       where: { id },
     });
   }

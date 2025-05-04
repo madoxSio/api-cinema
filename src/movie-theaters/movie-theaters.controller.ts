@@ -20,6 +20,7 @@ import {
   ApiBody,
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiOperation,
   ApiProperty,
 } from '@nestjs/swagger';
 
@@ -37,6 +38,10 @@ export class MovieTheatersController {
     description: 'Movie theater hall created successfully',
     type: CreateMovieTheaterResponseDto,
   })
+  @ApiOperation({
+    summary: 'Create a new movie theater hall',
+    description: 'This endpoint creates a new movie theater hall.',
+  })
   create(@Body(ValidationPipe) createMovieTheaterDto: CreateMovieTheaterDto) {
     return this.movieTheatersService.create(createMovieTheaterDto);
   }
@@ -46,6 +51,10 @@ export class MovieTheatersController {
     description: 'Get all movie theater halls',
     type: [CreateMovieTheaterResponseDto],
   })
+  @ApiOperation({
+    summary: 'Get all movie theater halls',
+    description: 'This endpoint retrieves all movie theater halls.',
+  })
   findAll() {
     return this.movieTheatersService.findAll();
   }
@@ -54,6 +63,10 @@ export class MovieTheatersController {
   @ApiOkResponse({
     description: 'Get a movie theater hall by ID',
     type: CreateMovieTheaterResponseDto,
+  })
+  @ApiOperation({
+    summary: 'Get a movie theater hall by ID',
+    description: 'This endpoint retrieves a movie theater hall by its ID.',
   })
   findOne(@Param('id') id: string) {
     return this.movieTheatersService.findOne(+id);
@@ -80,6 +93,10 @@ export class MovieTheatersController {
       photos: ['photo1.jpg', 'photo2.jpg'],
     },
   })
+  @ApiOperation({
+    summary: 'Update a movie theater hall',
+    description: 'This endpoint updates a movie theater hall by its ID.',
+  })
   update(
     @Param('id') id: string,
     @Body(ValidationPipe) updateMovieTheaterDto: UpdateMovieTheaterDto,
@@ -91,6 +108,10 @@ export class MovieTheatersController {
   @ApiOkResponse({
     description: 'Movie theater hall deleted successfully',
     type: CreateMovieTheaterResponseDto,
+  })
+  @ApiOperation({
+    summary: 'Delete a movie theater hall',
+    description: 'This endpoint deletes a movie theater hall by its ID.',
   })
   remove(@Param('id') id: string) {
     return this.movieTheatersService.remove(+id);

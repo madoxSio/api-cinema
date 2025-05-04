@@ -12,7 +12,11 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
@@ -35,6 +39,10 @@ export class AuthController {
       },
     },
   })
+  @ApiOperation({
+    summary: 'Register a new user',
+    description: 'This endpoint registers a new user.',
+  })
   async register(@Body() dto: RegisterDto) {
     return this.authService.register(dto);
   }
@@ -45,6 +53,10 @@ export class AuthController {
     description: 'User logged in successfully',
     type: LoginResponseDto,
   })
+  @ApiOperation({
+    summary: 'Login user',
+    description: 'This endpoint logs in a user and returns tokens.',
+  })
   async login(@Body() dto: LoginDto) {
     const user = await this.authService.validateUser(dto.email, dto.password);
     return this.authService.login(user);
@@ -54,6 +66,11 @@ export class AuthController {
   @ApiCreatedResponse({
     description: 'Refresh token',
     type: LoginResponseDto,
+  })
+  @ApiOperation({
+    summary: 'Refresh access token',
+    description:
+      'This endpoint refreshes the access token using the refresh token.',
   })
   async refresh(@Body('refreshToken') token: string) {
     return this.authService.refresh(token);
@@ -69,6 +86,10 @@ export class AuthController {
         message: 'User logged out successfully',
       },
     },
+  })
+  @ApiOperation({
+    summary: 'Logout user',
+    description: 'This endpoint logs out a user.',
   })
   async logout(@Request() req: Request & { user: JwtPayload }) {
     this.logger.log('Logout user', req.user);
