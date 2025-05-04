@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateMovieTheaterDto as CreateMovieTheaterDto } from './dto/create-movie-theater.dto';
 import { UpdateMovieTheaterDto as UpdateMovieTheaterDto } from './dto/update-movie-theater.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class MovieTheatersService {
@@ -28,6 +28,7 @@ export class MovieTheatersService {
           url: photo,
         })),
       });
+      newMovieTheater['photos'] = photos;
     }
 
     return newMovieTheater;
@@ -136,14 +137,17 @@ export class MovieTheatersService {
       return null;
     }
 
+    const movieTheaterDeleted = this.prisma.movieTheater.delete({
+      where: { id },
+    });
+
     if (movieTheaterPhotos) {
       await this.prisma.movieTheaterPhoto.deleteMany({
         where: { movieTheaterId: id },
       });
+      movieTheater['photos'] = movieTheaterPhotos;
     }
 
-    return this.prisma.movieTheater.delete({
-      where: { id },
-    });
+    return movieTheaterDeleted;
   }
 }

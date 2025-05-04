@@ -56,3 +56,36 @@ export class CreateMovieTheaterDto {
   @IsOptional()
   isUnderMaintenance?: boolean;
 }
+
+export class CreateMovieTheaterResponseDto {
+  @ApiProperty({ example: 5 })
+  id: number;
+
+  @ApiProperty({ example: 'Salle Magelan' })
+  name: string;
+
+  @ApiProperty({ example: 'La salle Magelan composé de fauteuils éléctrique' })
+  description: string;
+
+  @ApiProperty({
+    description: 'Liste des url des photos de la salle',
+    example: [
+      'https://example.com/photo1.jpg',
+      'https://example.com/photo2.jpg',
+    ],
+    type: [String],
+  })
+  photos: string[];
+
+  @ApiProperty({ example: 'Grand' })
+  type: string;
+
+  @ApiProperty({ example: 1900 })
+  capacity: number;
+
+  @ApiProperty({ example: true })
+  hasDisabledAccess?: boolean;
+
+  @ApiProperty({ example: true })
+  isUnderMaintenance?: boolean;
+}
