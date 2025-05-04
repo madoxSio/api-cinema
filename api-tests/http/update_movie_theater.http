@@ -1,0 +1,12 @@
+PATCH http://localhost:3000/api/v1/movie-theaters/3 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMmYwOTQxNi05ZTY0LTQ1YjctOGJiYS02NjU4MzRjYjVhZjMiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NDYzMTc1MDgsImV4cCI6MTc0NjMxNzgwOH0.cAeCHN-Yo2hSHRPokvUrVREF5pfKn09JmqzTeFlRj20
+Content-Type: application/json
+
+{
+  "description": "Le cinema de Paris est un cinema magnifique",
+  "photos": [
+    "https://example.com/phototest.jpg"
+  ],
+  "type": "Grand",
+  "hasDisabledAccess": true
+}
