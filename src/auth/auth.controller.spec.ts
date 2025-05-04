@@ -4,13 +4,6 @@ import { AuthService } from './auth.service';
 import { Role } from '@prisma/client';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
 
-interface MockRequest {
-  user: {
-    sub: string;
-    role: string;
-  };
-}
-
 describe('AuthController', () => {
   let controller: AuthController;
   let service: Partial<AuthService>;

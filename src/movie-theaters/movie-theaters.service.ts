@@ -45,7 +45,9 @@ export class MovieTheatersService {
 
     const result = movieTheaters.map((movieTheater) => ({
       ...movieTheater,
-      photos: movieTheater.photos.map((photo) => photo.url),
+      photos: movieTheater.photos
+        ? movieTheater.photos.map((photo) => photo.url)
+        : [],
     }));
 
     if (result.length === 0) {
@@ -75,7 +77,9 @@ export class MovieTheatersService {
 
     const result = {
       ...movieTheater,
-      photos: movieTheater.photos.map((photo) => photo.url),
+      photos: movieTheater.photos
+        ? movieTheater.photos.map((photo) => photo.url)
+        : [],
     };
 
     return result;

@@ -12,11 +12,7 @@ import { RegisterDto } from './dto/register.dto';
 import { LoginDto, LoginResponseDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt.guard';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import {
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiProperty,
-} from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 
 @Controller('auth')
 export class AuthController {
