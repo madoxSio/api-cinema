@@ -21,6 +21,7 @@ model MovieTheater {
   type              String
   capacity          Int
   hasDisabledAccess Boolean             @default(false)
+  isUnderMaintenance Boolean            @default(false)
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
 }
