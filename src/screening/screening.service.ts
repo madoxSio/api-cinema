@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { CreateScreeningDTO } from './dto/create-screening.dto';
 import { UpdateScreeningDto } from './dto/update-screening.dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 import { addMinutes } from 'date-fns';
 
 @Injectable()
