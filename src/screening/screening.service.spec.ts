@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ScreeningService } from './screening.service';
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from '../prisma.service';
 import { CreateScreeningDTO } from './dto/create-screening.dto';
 import { UpdateScreeningDto } from './dto/update-screening.dto';
 
@@ -39,7 +39,7 @@ describe('ScreeningService', () => {
       const dto: CreateScreeningDTO = {
         start: '14:00',
         end: '16:00',
-        date: new Date(),
+        date: new Date().toISOString(),
         movieId: 1,
         movieTheaterId: 2,
       };
