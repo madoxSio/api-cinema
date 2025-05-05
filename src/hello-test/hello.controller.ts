@@ -9,4 +9,9 @@ export class HelloController {
   getHello(): string {
     return this.helloService.getHello();
   }
+
+  @Get('/welcom')
+  welcom() : string{
+    return this.helloService.welcomSetence();
+  }
 }

@@ -54,11 +54,35 @@ export class MovieTheaterService {
     });
   }
 
-  update(id: number, updateMovieTheaterDto: UpdateMovieTheaterDto) {
-    return `This action updates a #${id} movie theater`;
+  async update(id: number, updateMovieTheaterDto: UpdateMovieTheaterDto) {
+    this.logger.log( `This action updates a #${id} movie theater`);
+
+    const updtMovieThearter = await this.prisma.movieTheater.update({
+      where :{
+        id : id
+      },
+      data: {
+        ...updateMovieTheaterDto,
+        photos: updateMovieTheaterDto.photos
+          ? {
+              deleteMany: {},
+              create: updateMovieTheaterDto.photos.map((url) => ({ url })),
+            }
+          : undefined,
+      }
+      
+    });
+
+    return updateMovieTheaterDto;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} movie theater`;
+  async remove(id: number) {
+    this.logger.log( `This action removes a #${id} movie theater`);
+
+    const movieTheater = await this.prisma.movieTheater.delete({
+      where : {
+        id : id
+      }
+    });
   }
 }
