@@ -1,0 +1,8 @@
+POST http://localhost:3000/api/v1/auth/register HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMmYwOTQxNi05ZTY0LTQ1YjctOGJiYS02NjU4MzRjYjVhZjMiLCJyb2xlIjoiQURNSU4iLCJpYXQiOjE3NDYzMTc1MDgsImV4cCI6MTc0NjMxNzgwOH0.cAeCHN-Yo2hSHRPokvUrVREF5pfKn09JmqzTeFlRj20
+Content-Type: application/json
+
+{
+  "email": "examplse@example.com",
+  "password": "hn&N6U5rhg0v%T"
+}

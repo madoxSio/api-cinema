@@ -21,7 +21,6 @@ model MovieTheater {
   type              String
   capacity          Int
   hasDisabledAccess Boolean             @default(false)
-  screenings        Screening[] 
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
 }
@@ -57,4 +56,29 @@ model Screening {
   movieTheater MovieTheater @relation(fields: [movieTheaterId], references: [id])
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+}
+
+model User {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  password       String
+  role           Role     @default(CLIENT)
+  refreshTokens  RefreshToken[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model RefreshToken {
+  id         String   @id @default(uuid())
+  token      String   @unique
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+  SUPER_ADMIN
 }
