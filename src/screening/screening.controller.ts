@@ -13,7 +13,7 @@ import {
 import { ScreeningService } from './screening.service';
 import { CreateScreeningDTO } from './dto/create-screening.dto';
 import { UpdateScreeningDto } from './dto/update-screening.dto';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import {
   ApiTags,
   ApiBearerAuth,
