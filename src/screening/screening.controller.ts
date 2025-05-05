@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ScreeningService } from './screening.service';
 import { CreateScreeningDTO } from './dto/create-screening.dto';
 import { UpdateScreeningDto } from './dto/update-screening.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('screening')
