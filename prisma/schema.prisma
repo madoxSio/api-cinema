@@ -20,6 +20,7 @@ model MovieTheater {
   photos            MovieTheaterPhoto[]
   type              String
   capacity          Int
+  screenings       Screening[]
   hasDisabledAccess Boolean             @default(false)
   isUnderMaintenance Boolean            @default(false)
   createdAt         DateTime            @default(now())

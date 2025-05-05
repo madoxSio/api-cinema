@@ -3,6 +3,7 @@ import { ScreeningService } from './screening.service';
 import { CreateScreeningDTO } from './dto/create-screening.dto';
 import { UpdateScreeningDto } from './dto/update-screening.dto';
 
+@UseGuards(JwtAuthGuard)
 @Controller('screening')
 export class ScreeningController {
   constructor(private readonly screeningService: ScreeningService) {}
