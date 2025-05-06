@@ -26,7 +26,7 @@ import {
 
 @ApiTags('Screenings')
 @ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 @Controller('screening')
 export class ScreeningController {
   constructor(private readonly screeningService: ScreeningService) {}

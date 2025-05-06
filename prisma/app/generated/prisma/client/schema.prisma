@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "app/generated/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model MovieTheater {
+  id                 Int                 @id @default(autoincrement())
+  description        String
+  name               String
+  photos             MovieTheaterPhoto[]
+  type               String
+  capacity           Int
+  screenings         Screening[]
+  hasDisabledAccess  Boolean             @default(false)
+  isUnderMaintenance Boolean             @default(false)
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+}
+
+model MovieTheaterPhoto {
+  id             Int          @id @default(autoincrement())
+  url            String
+  movieTheaterId Int
+  movieTheater   MovieTheater @relation(fields: [movieTheaterId], references: [id])
+}
+
+model Movie {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String
+  year        Int
+  age_min     Int
+  duration    Int
+  screenings  Screening[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Screening {
+  id             Int          @id @default(autoincrement())
+  start          String
+  end            String
+  date           DateTime
+  movieId        Int
+  movie          Movie        @relation(fields: [movieId], references: [id])
+  movieTheaterId Int
+  movieTheater   MovieTheater @relation(fields: [movieTheaterId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  role          Role           @default(CLIENT)
+  refreshTokens RefreshToken[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  CLIENT
+  ADMIN
+  SUPER_ADMIN
+}

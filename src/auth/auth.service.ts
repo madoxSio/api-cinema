@@ -97,6 +97,7 @@ export class AuthService {
         password: hashedPassword,
       });
     } catch (error) {
+      this.logger.error('Error in register', error);
       if (
         error instanceof PrismaClientKnownRequestError &&
         error.code === 'P2002'
