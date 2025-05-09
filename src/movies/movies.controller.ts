@@ -9,6 +9,7 @@ import {
   HttpCode,
   ParseIntPipe,
   UseGuards,
+  Query
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
@@ -20,7 +21,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 @UseGuards(JwtAuthGuard)
 @Controller('movies')
 export class MoviesController {
-  constructor(private readonly moviesService: MoviesService) {}
+  constructor(private readonly moviesService: MoviesService) { }
 
   @Post()
   @HttpCode(201)
@@ -92,5 +93,15 @@ export class MoviesController {
   @ApiNotFoundResponse({ description: 'Movie not found.' })
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.moviesService.remove(id);
+  }
+
+  @Get('spec')
+  async getMovieSchedule(
+    @Query('start') start: string,
+    @Query('end') end: string,
+    @Query('movieTitle') movieTitle: string,
+  ) {
+
+    return this.moviesService.getMovieOnPeriod(start, end, movieTitle);
   }
 }

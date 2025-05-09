@@ -9,6 +9,7 @@ import {
   UseGuards,
   HttpCode,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ScreeningService } from './screening.service';
 import { CreateScreeningDTO } from './dto/create-screening.dto';
@@ -29,7 +30,7 @@ import {
 //@UseGuards(JwtAuthGuard)
 @Controller('screening')
 export class ScreeningController {
-  constructor(private readonly screeningService: ScreeningService) {}
+  constructor(private readonly screeningService: ScreeningService) { }
 
   @Post()
   @HttpCode(201)
@@ -46,6 +47,14 @@ export class ScreeningController {
     return this.screeningService.create(createScreeningDto);
   }
 
+  @Post('many')
+  @ApiOperation({ summary: 'Insère plusieurs séances' })
+  @ApiCreatedResponse({ description: 'Séances insérées' })
+  createMany(@Body() data: CreateScreeningDTO[]) {
+    return this.screeningService.createMany(data);
+  }
+
+
   @Get()
   @ApiOperation({
     summary: 'Get all screenings',
@@ -58,6 +67,31 @@ export class ScreeningController {
   findAll() {
     return this.screeningService.findAll();
   }
+
+  @Get('planning')
+  @ApiOperation({
+    summary: 'Get screenings in a date range',
+    description: 'Returns all screenings between a start and end date.',
+  })
+  @ApiOkResponse({
+    description: 'Screenings retrieved successfully within the date range.',
+    type: [CreateScreeningDTO],
+  })
+  @ApiBadRequestResponse({ description: 'Invalid or missing date parameters.' })
+  async getPlanning(
+    @Query('start') start: string,
+    @Query('end') end: string,
+  ) {
+    return this.screeningService.getPlanning(start, end);
+  }
+
+  @Get(':id/tickets')
+  @ApiOperation({ summary: 'Get number of tickets sold for a screening' })
+  @ApiOkResponse({ description: 'Returns number of tickets sold' })
+  getNbTickets(@Param('id', ParseIntPipe) id: number) {
+    return this.screeningService.getTickets(id);
+  }
+
 
   @Get(':id')
   @ApiOperation({
@@ -102,4 +136,7 @@ export class ScreeningController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.screeningService.remove(id);
   }
+
+
+
 }

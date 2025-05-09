@@ -8,13 +8,13 @@ import {
 import { CreateScreeningDTO } from './dto/create-screening.dto';
 import { UpdateScreeningDto } from './dto/update-screening.dto';
 import { PrismaService } from '../prisma.service';
-import { addMinutes } from 'date-fns';
+import { addDays, addMinutes, setHours, setMinutes } from 'date-fns';
 
 @Injectable()
 export class ScreeningService {
   private readonly logger = new Logger(ScreeningService.name);
 
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) { }
 
   async create(createDto: CreateScreeningDTO) {
     const { movieId, movieTheaterId, start } = createDto;
@@ -26,7 +26,7 @@ export class ScreeningService {
       const theater = await this.prisma.movieTheater.findUnique({ where: { id: movieTheaterId } });
       if (!theater) throw new NotFoundException(`Theater with ID ${movieTheaterId} not found`);
 
-      const startDate = new Date(start); // start est censé être un string ISO
+      const startDate = new Date(start); // start est censé être un string ISO mais mehlichhh
       const endDate = addMinutes(startDate, movie.duration + 30); // durée + pub/nettoyage
 
       // Vérifie le chevauchement
@@ -51,6 +51,7 @@ export class ScreeningService {
           start: startDate.toISOString(),
           end: endDate.toISOString(),
           date: startDate.toISOString(),
+          nb_ticket : 0,
           movieId,
           movieTheaterId,
         },
@@ -69,6 +70,14 @@ export class ScreeningService {
     }
   }
 
+  async createMany(screenings: CreateScreeningDTO[]) {
+    return this.prisma.screening.createMany({
+      data: screenings,
+      skipDuplicates: true,
+    });
+  }
+
+
   async findAll() {
     return this.prisma.screening.findMany({
       include: {
@@ -77,6 +86,56 @@ export class ScreeningService {
       },
     });
   }
+
+  async getPlanning(start: string, end: string) {
+    if (!start || !end) {
+      this.logger.error('start and end dates are required!');
+    }
+
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      this.logger.error('Invalid date format!');
+    }
+
+    if (startDate > endDate) {
+      this.logger.error('start date must be before end date!!');
+    }
+
+    const screenings = this.prisma.screening.findMany({
+      where: {
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      include: {
+        movie: true,
+        movieTheater: true,
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+
+    if (!screenings) {
+      const logger = new Logger('ScreeningService');
+      logger.warn(`Aucnune séance trouvé entre le ${start} et le ${end}`)
+    }
+
+    return screenings;
+  }
+
+  async getTickets(id: number) {
+    return this.prisma.screening.findUnique({
+      where: { id },
+      select: { nb_ticket: true },
+    });
+  }
+
+
+
 
   async findOne(id: number) {
     const screening = await this.prisma.screening.findUnique({
@@ -101,7 +160,7 @@ export class ScreeningService {
     }
 
     try {
-      // Filtrage manuel des champs pour éviter les erreurs Prisma
+      // Filtrage manuel des champ pour évite les erreurs Prisma
       const { movieTheaterId, ...safeData } = updateDto;
 
       const updated = await this.prisma.screening.update({
@@ -125,4 +184,5 @@ export class ScreeningService {
     await this.prisma.screening.delete({ where: { id } });
     return { message: `Screening #${id} deleted successfully.` };
   }
+
 }

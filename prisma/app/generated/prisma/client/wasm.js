@@ -154,6 +154,7 @@ exports.Prisma.ScreeningScalarFieldEnum = {
   start: 'start',
   end: 'end',
   date: 'date',
+  nb_ticket: 'nb_ticket',
   movieId: 'movieId',
   movieTheaterId: 'movieTheaterId',
   createdAt: 'createdAt',

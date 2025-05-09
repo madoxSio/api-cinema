@@ -52,6 +52,7 @@ model Screening {
   start          String
   end            String
   date           DateTime
+  nb_ticket      Int
   movieId        Int
   movie          Movie        @relation(fields: [movieId], references: [id])
   movieTheaterId Int

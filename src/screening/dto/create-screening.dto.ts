@@ -21,4 +21,8 @@ export class CreateScreeningDTO {
   @ApiProperty({ example: '2025-05-06T00:00:00.000Z' })
   @IsDateString()
   date: string;
+
+  @ApiProperty({ example: 25 })
+  @IsInt()
+  nb_ticket: number;
 }

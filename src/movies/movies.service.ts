@@ -12,7 +12,7 @@ import { PrismaService } from '../prisma.service';
 export class MoviesService {
   private readonly logger = new Logger(MoviesService.name);
 
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(createMovieDto: CreateMovieDto) {
     this.logger.log('This action adds a new movie');
@@ -107,4 +107,48 @@ export class MoviesService {
       throw new InternalServerErrorException('Failed to delete movie');
     }
   }
+
+
+  async getMovieOnPeriod(  start: string, end: string, movieTitle: string) {
+  
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    if(isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      this.logger.error('Invalid date format!');
+    }
+
+    if (startDate > endDate) {
+      this.logger.error('start date must be before end date!');
+    }
+
+    const movie = await this.prisma.movie.findFirst({
+      where: { title: movieTitle },
+    });
+
+    if (!movie) {
+      throw new NotFoundException(`Movie with title ${movieTitle} not found`);
+    }
+
+    const screenings = await this.prisma.screening.findMany({
+      where: {
+        movieId: movie.id,
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
+       
+      },
+      include: {
+        movieTheater: true,
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+
+    return screenings;
+  }
 }
+
+
