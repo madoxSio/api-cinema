@@ -51,6 +51,16 @@ export class MoviesController {
     return this.moviesService.findAll();
   }
 
+  @Get('spec')
+  async getMovieSchedule(
+    @Query('start') start: string,
+    @Query('end') end: string,
+    @Query('movieTitle') movieTitle: string,
+  ) {
+
+    return this.moviesService.getMovieOnPeriod(start, end, movieTitle);
+  }
+
   @Get(':id')
   @ApiOperation({
     summary: 'Get a movie by ID',
@@ -95,13 +105,5 @@ export class MoviesController {
     return this.moviesService.remove(id);
   }
 
-  @Get('spec')
-  async getMovieSchedule(
-    @Query('start') start: string,
-    @Query('end') end: string,
-    @Query('movieTitle') movieTitle: string,
-  ) {
 
-    return this.moviesService.getMovieOnPeriod(start, end, movieTitle);
-  }
 }
