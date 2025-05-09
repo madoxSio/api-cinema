@@ -4870,12 +4870,14 @@ export namespace Prisma {
 
   export type ScreeningAvgAggregateOutputType = {
     id: number | null
+    nb_ticket: number | null
     movieId: number | null
     movieTheaterId: number | null
   }
 
   export type ScreeningSumAggregateOutputType = {
     id: number | null
+    nb_ticket: number | null
     movieId: number | null
     movieTheaterId: number | null
   }
@@ -4885,6 +4887,7 @@ export namespace Prisma {
     start: string | null
     end: string | null
     date: Date | null
+    nb_ticket: number | null
     movieId: number | null
     movieTheaterId: number | null
     createdAt: Date | null
@@ -4896,6 +4899,7 @@ export namespace Prisma {
     start: string | null
     end: string | null
     date: Date | null
+    nb_ticket: number | null
     movieId: number | null
     movieTheaterId: number | null
     createdAt: Date | null
@@ -4907,6 +4911,7 @@ export namespace Prisma {
     start: number
     end: number
     date: number
+    nb_ticket: number
     movieId: number
     movieTheaterId: number
     createdAt: number
@@ -4917,12 +4922,14 @@ export namespace Prisma {
 
   export type ScreeningAvgAggregateInputType = {
     id?: true
+    nb_ticket?: true
     movieId?: true
     movieTheaterId?: true
   }
 
   export type ScreeningSumAggregateInputType = {
     id?: true
+    nb_ticket?: true
     movieId?: true
     movieTheaterId?: true
   }
@@ -4932,6 +4939,7 @@ export namespace Prisma {
     start?: true
     end?: true
     date?: true
+    nb_ticket?: true
     movieId?: true
     movieTheaterId?: true
     createdAt?: true
@@ -4943,6 +4951,7 @@ export namespace Prisma {
     start?: true
     end?: true
     date?: true
+    nb_ticket?: true
     movieId?: true
     movieTheaterId?: true
     createdAt?: true
@@ -4954,6 +4963,7 @@ export namespace Prisma {
     start?: true
     end?: true
     date?: true
+    nb_ticket?: true
     movieId?: true
     movieTheaterId?: true
     createdAt?: true
@@ -5052,6 +5062,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date
+    nb_ticket: number
     movieId: number
     movieTheaterId: number
     createdAt: Date
@@ -5082,6 +5093,7 @@ export namespace Prisma {
     start?: boolean
     end?: boolean
     date?: boolean
+    nb_ticket?: boolean
     movieId?: boolean
     movieTheaterId?: boolean
     createdAt?: boolean
@@ -5095,6 +5107,7 @@ export namespace Prisma {
     start?: boolean
     end?: boolean
     date?: boolean
+    nb_ticket?: boolean
     movieId?: boolean
     movieTheaterId?: boolean
     createdAt?: boolean
@@ -5108,6 +5121,7 @@ export namespace Prisma {
     start?: boolean
     end?: boolean
     date?: boolean
+    nb_ticket?: boolean
     movieId?: boolean
     movieTheaterId?: boolean
     createdAt?: boolean
@@ -5121,13 +5135,14 @@ export namespace Prisma {
     start?: boolean
     end?: boolean
     date?: boolean
+    nb_ticket?: boolean
     movieId?: boolean
     movieTheaterId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ScreeningOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "start" | "end" | "date" | "movieId" | "movieTheaterId" | "createdAt" | "updatedAt", ExtArgs["result"]["screening"]>
+  export type ScreeningOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "start" | "end" | "date" | "nb_ticket" | "movieId" | "movieTheaterId" | "createdAt" | "updatedAt", ExtArgs["result"]["screening"]>
   export type ScreeningInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     movie?: boolean | MovieDefaultArgs<ExtArgs>
     movieTheater?: boolean | MovieTheaterDefaultArgs<ExtArgs>
@@ -5152,6 +5167,7 @@ export namespace Prisma {
       start: string
       end: string
       date: Date
+      nb_ticket: number
       movieId: number
       movieTheaterId: number
       createdAt: Date
@@ -5585,6 +5601,7 @@ export namespace Prisma {
     readonly start: FieldRef<"Screening", 'String'>
     readonly end: FieldRef<"Screening", 'String'>
     readonly date: FieldRef<"Screening", 'DateTime'>
+    readonly nb_ticket: FieldRef<"Screening", 'Int'>
     readonly movieId: FieldRef<"Screening", 'Int'>
     readonly movieTheaterId: FieldRef<"Screening", 'Int'>
     readonly createdAt: FieldRef<"Screening", 'DateTime'>
@@ -8201,6 +8218,7 @@ export namespace Prisma {
     start: 'start',
     end: 'end',
     date: 'date',
+    nb_ticket: 'nb_ticket',
     movieId: 'movieId',
     movieTheaterId: 'movieTheaterId',
     createdAt: 'createdAt',
@@ -8541,6 +8559,7 @@ export namespace Prisma {
     start?: StringFilter<"Screening"> | string
     end?: StringFilter<"Screening"> | string
     date?: DateTimeFilter<"Screening"> | Date | string
+    nb_ticket?: IntFilter<"Screening"> | number
     movieId?: IntFilter<"Screening"> | number
     movieTheaterId?: IntFilter<"Screening"> | number
     createdAt?: DateTimeFilter<"Screening"> | Date | string
@@ -8554,6 +8573,7 @@ export namespace Prisma {
     start?: SortOrder
     end?: SortOrder
     date?: SortOrder
+    nb_ticket?: SortOrder
     movieId?: SortOrder
     movieTheaterId?: SortOrder
     createdAt?: SortOrder
@@ -8570,6 +8590,7 @@ export namespace Prisma {
     start?: StringFilter<"Screening"> | string
     end?: StringFilter<"Screening"> | string
     date?: DateTimeFilter<"Screening"> | Date | string
+    nb_ticket?: IntFilter<"Screening"> | number
     movieId?: IntFilter<"Screening"> | number
     movieTheaterId?: IntFilter<"Screening"> | number
     createdAt?: DateTimeFilter<"Screening"> | Date | string
@@ -8583,6 +8604,7 @@ export namespace Prisma {
     start?: SortOrder
     end?: SortOrder
     date?: SortOrder
+    nb_ticket?: SortOrder
     movieId?: SortOrder
     movieTheaterId?: SortOrder
     createdAt?: SortOrder
@@ -8602,6 +8624,7 @@ export namespace Prisma {
     start?: StringWithAggregatesFilter<"Screening"> | string
     end?: StringWithAggregatesFilter<"Screening"> | string
     date?: DateTimeWithAggregatesFilter<"Screening"> | Date | string
+    nb_ticket?: IntWithAggregatesFilter<"Screening"> | number
     movieId?: IntWithAggregatesFilter<"Screening"> | number
     movieTheaterId?: IntWithAggregatesFilter<"Screening"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Screening"> | Date | string
@@ -8932,6 +8955,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date | string
+    nb_ticket: number
     createdAt?: Date | string
     updatedAt?: Date | string
     movie: MovieCreateNestedOneWithoutScreeningsInput
@@ -8943,6 +8967,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date | string
+    nb_ticket: number
     movieId: number
     movieTheaterId: number
     createdAt?: Date | string
@@ -8953,6 +8978,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     movie?: MovieUpdateOneRequiredWithoutScreeningsNestedInput
@@ -8964,6 +8990,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     movieId?: IntFieldUpdateOperationsInput | number
     movieTheaterId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -8975,6 +9002,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date | string
+    nb_ticket: number
     movieId: number
     movieTheaterId: number
     createdAt?: Date | string
@@ -8985,6 +9013,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -8994,6 +9023,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     movieId?: IntFieldUpdateOperationsInput | number
     movieTheaterId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -9376,6 +9406,7 @@ export namespace Prisma {
     start?: SortOrder
     end?: SortOrder
     date?: SortOrder
+    nb_ticket?: SortOrder
     movieId?: SortOrder
     movieTheaterId?: SortOrder
     createdAt?: SortOrder
@@ -9384,6 +9415,7 @@ export namespace Prisma {
 
   export type ScreeningAvgOrderByAggregateInput = {
     id?: SortOrder
+    nb_ticket?: SortOrder
     movieId?: SortOrder
     movieTheaterId?: SortOrder
   }
@@ -9393,6 +9425,7 @@ export namespace Prisma {
     start?: SortOrder
     end?: SortOrder
     date?: SortOrder
+    nb_ticket?: SortOrder
     movieId?: SortOrder
     movieTheaterId?: SortOrder
     createdAt?: SortOrder
@@ -9404,6 +9437,7 @@ export namespace Prisma {
     start?: SortOrder
     end?: SortOrder
     date?: SortOrder
+    nb_ticket?: SortOrder
     movieId?: SortOrder
     movieTheaterId?: SortOrder
     createdAt?: SortOrder
@@ -9412,6 +9446,7 @@ export namespace Prisma {
 
   export type ScreeningSumOrderByAggregateInput = {
     id?: SortOrder
+    nb_ticket?: SortOrder
     movieId?: SortOrder
     movieTheaterId?: SortOrder
   }
@@ -9894,6 +9929,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date | string
+    nb_ticket: number
     createdAt?: Date | string
     updatedAt?: Date | string
     movie: MovieCreateNestedOneWithoutScreeningsInput
@@ -9904,6 +9940,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date | string
+    nb_ticket: number
     movieId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -9968,6 +10005,7 @@ export namespace Prisma {
     start?: StringFilter<"Screening"> | string
     end?: StringFilter<"Screening"> | string
     date?: DateTimeFilter<"Screening"> | Date | string
+    nb_ticket?: IntFilter<"Screening"> | number
     movieId?: IntFilter<"Screening"> | number
     movieTheaterId?: IntFilter<"Screening"> | number
     createdAt?: DateTimeFilter<"Screening"> | Date | string
@@ -10044,6 +10082,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date | string
+    nb_ticket: number
     createdAt?: Date | string
     updatedAt?: Date | string
     movieTheater: MovieTheaterCreateNestedOneWithoutScreeningsInput
@@ -10054,6 +10093,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date | string
+    nb_ticket: number
     movieTheaterId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10322,6 +10362,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date | string
+    nb_ticket: number
     movieId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10345,6 +10386,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     movie?: MovieUpdateOneRequiredWithoutScreeningsNestedInput
@@ -10355,6 +10397,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     movieId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10365,6 +10408,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     movieId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10375,6 +10419,7 @@ export namespace Prisma {
     start: string
     end: string
     date: Date | string
+    nb_ticket: number
     movieTheaterId: number
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -10384,6 +10429,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     movieTheater?: MovieTheaterUpdateOneRequiredWithoutScreeningsNestedInput
@@ -10394,6 +10440,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     movieTheaterId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -10404,6 +10451,7 @@ export namespace Prisma {
     start?: StringFieldUpdateOperationsInput | string
     end?: StringFieldUpdateOperationsInput | string
     date?: DateTimeFieldUpdateOperationsInput | Date | string
+    nb_ticket?: IntFieldUpdateOperationsInput | number
     movieTheaterId?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

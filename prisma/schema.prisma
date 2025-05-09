@@ -47,17 +47,17 @@ model Movie {
 }
 
 model Screening {
-  id             Int           @id @default(autoincrement())
-  start          String
-  end            String
-  date           DateTime
-  movieId        Int
-  movie          Movie         @relation(fields: [movieId], references: [id])
-  movieTheaterId Int
-  movieTheater   MovieTheater  @relation(fields: [movieTheaterId], references: [id])
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  TicketUsage    TicketUsage[]
+  id          Int        @id @default(autoincrement())
+  start       String
+  end         String
+  date        DateTime
+  nb_ticket   Int
+  movieId     Int       
+  movie       Movie      @relation(fields: [movieId], references: [id])
+  movieTheaterId Int     
+  movieTheater MovieTheater @relation(fields: [movieTheaterId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 model User {

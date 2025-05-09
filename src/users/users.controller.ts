@@ -12,7 +12,6 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { Role } from '@prisma/client';
 import { Roles } from '../auth/decorators/roles.decorator';
 import {
   ApiOkResponse,
@@ -21,6 +20,7 @@ import {
   ApiResponse,
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
+import { Role } from '@prisma/client';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Roles(Role.ADMIN)

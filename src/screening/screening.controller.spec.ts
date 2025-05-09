@@ -43,6 +43,7 @@ describe('ScreeningController', () => {
         date: new Date().toISOString(),
         movieId: 1,
         movieTheaterId: 2,
+        nb_ticket: 0
       };
 
       const result = { id: 1, ...dto };
