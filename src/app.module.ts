@@ -6,8 +6,9 @@ import { PrismaModule } from './prisma.module';
 import { MovieTheatersModule } from './movie-theaters/movie-theaters.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { TicketModule } from './ticket/ticket.module';
 
 @Module({
-  imports: [HelloModule, PrismaModule, MovieTheatersModule, MoviesModule, ScreeningModule, AuthModule, UsersModule],
+  imports: [HelloModule, PrismaModule, MovieTheatersModule, MoviesModule, ScreeningModule, AuthModule, UsersModule, TicketModule],
 })
 export class AppModule {}

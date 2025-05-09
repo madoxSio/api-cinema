@@ -183,7 +183,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Mahamadou\\Desktop\\Cours-ESGI\\Ecoles-cours\\S2\\API-Rest avec NODEJS\\PROJET-API-Cinema\\api-cinema\\prisma\\app\\generated\\prisma\\client",
+      "value": "/home/nabil/Cours/Cours_AL1/Cours_Node_TS/projet_node/api-cinema/prisma/app/generated/prisma/client",
       "fromEnvVar": null
     },
     "config": {
@@ -192,12 +192,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Mahamadou\\Desktop\\Cours-ESGI\\Ecoles-cours\\S2\\API-Rest avec NODEJS\\PROJET-API-Cinema\\api-cinema\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/nabil/Cours/Cours_AL1/Cours_Node_TS/projet_node/api-cinema/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
