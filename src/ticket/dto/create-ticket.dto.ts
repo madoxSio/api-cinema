@@ -1,4 +1,4 @@
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, isNumber, IsNumber, IsString } from 'class-validator';
 
 export enum TypeTicket {
     STANDARD = 'STANDARD',
@@ -10,4 +10,9 @@ export class CreateTicketDto {
     userId: string;
     @IsEnum(TypeTicket, { message: 'type must be STANDARD or SUPER' })
     type: TypeTicket;
+}
+
+export class CreateTicketUsageDto{
+    @IsNumber({}, { message: 'movieTheaterId must be a number' })
+    screeningId: number;
 }

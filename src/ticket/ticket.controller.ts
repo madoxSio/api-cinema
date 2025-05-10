@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TicketService } from './ticket.service';
-import { CreateTicketDto } from './dto/create-ticket.dto';
+import { CreateTicketDto, CreateTicketUsageDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 
 @Controller('ticket')
@@ -30,5 +30,13 @@ export class TicketController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ticketService.remove(+id);
+  }
+
+  @Post(':ticketId/usage')
+  createTicketUsage(
+    @Param('ticketId') ticketId: string,
+    @Body() createTicketUsageDto: CreateTicketUsageDto,
+  ) {
+    return this.ticketService.createTicketUsage(createTicketUsageDto, +ticketId);
   }
 }
