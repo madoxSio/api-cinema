@@ -10,6 +10,13 @@ export class TicketService {
   
   async create(createTicketDto: CreateTicketDto) {
     this.logger.log('Creating ticket', createTicketDto);
+    const user = await this.prisma.user.findUnique({
+      where: { id: createTicketDto.userId },
+    });
+    if (!user) {
+      this.logger.warn('User not found', createTicketDto.userId);
+      throw new NotFoundException('User not found');
+    }
     return await this.prisma.ticket.create({
       data: {
         userId: createTicketDto.userId,
