@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
 
-
 export class User {
   @ApiProperty({
     description: 'Unique identifier for the user',
