@@ -1,14 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class TicketService {
-  create(createTicketDto: CreateTicketDto) {
-    return 'This action adds a new ticket';
+  private readonly logger = new Logger(TicketService.name);
+  constructor(private prisma: PrismaService) {}
+  
+  async create(createTicketDto: CreateTicketDto) {
+    this.logger.log('Creating ticket', createTicketDto);
+    return await this.prisma.ticket.create({
+      data: {
+        userId: createTicketDto.userId,
+        type: createTicketDto.type,
+      },
+    });
+    //return 'This action adds a new ticket ' + JSON.stringify(createTicketDto);
   }
 
-  findAll() {
+  async findAll() {
     return `This action returns all ticket`;
   }
 
