@@ -93,7 +93,7 @@ export class UsersController {
     summary: 'Update a user by ID',
     description: 'This endpoint updates a user by their unique ID.',
   })
-  @Roles(Role.ADMIN)
+  @Roles(Role.SUPER_ADMIN)
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.update(id, updateUserDto);
   }
