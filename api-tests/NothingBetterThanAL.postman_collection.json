@@ -769,6 +769,229 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get All Ticket (admin only)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/ticket",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ticket"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Ticket",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"type\" : \"STANDARD\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/ticket/me",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"ticket",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get One Ticket",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Create Ticket Usage",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get User tickets",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/users/75da1332-2273-4026-92d3-df2850a2c5d2/tickets/usages",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"75da1332-2273-4026-92d3-df2850a2c5d2",
+						"tickets",
+						"usages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Balance",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/users/75da1332-2273-4026-92d3-df2850a2c5d2/balance",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"75da1332-2273-4026-92d3-df2850a2c5d2",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit money",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 20.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/users/75da1332-2273-4026-92d3-df2850a2c5d2/deposit",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"75da1332-2273-4026-92d3-df2850a2c5d2",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Withdraw money",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"amount\": 10.00\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/users/75da1332-2273-4026-92d3-df2850a2c5d2/withdraw",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"75da1332-2273-4026-92d3-df2850a2c5d2",
+						"withdraw"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get My Balance",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}/api/v1/users/me/balance",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"me",
+						"balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get my transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/v1/users/me/transactions",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"me",
+						"transactions"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
