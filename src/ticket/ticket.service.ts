@@ -102,6 +102,29 @@ export class TicketService {
       throw new NotFoundException('Screening not found');
     }
 
+    if (screening.date < new Date()) {
+      this.logger.warn('Screening has already started', ticketUsageDto.screeningId);
+      throw new BadRequestException('Screening has already started');
+    }
+
+    const movieTheater = await this.prisma.movieTheater.findUnique({
+      where: { id: screening.movieTheaterId },
+    });
+    if (!movieTheater) {
+      this.logger.warn('Movie theater not found', screening.movieTheaterId);
+      throw new NotFoundException('Movie theater not found');
+    }
+
+    if (movieTheater.isUnderMaintenance) {
+      this.logger.warn('Movie theater is under maintenance', movieTheater.id);
+      throw new BadRequestException('Movie theater is under maintenance');
+    }    
+
+    if (movieTheater.capacity <= screening.nb_ticket) {
+      this.logger.warn('Movie theater is full', movieTheater.id);
+      throw new BadRequestException('Movie theater is full');
+    }
+
     if(ticket.type === 'STANDARD'){
       const ticketUsage = await this.prisma.ticketUsage.findFirst({
         where: {
@@ -129,11 +152,20 @@ export class TicketService {
         throw new BadRequestException('Ticket usage already exists');
       }
     }
-    return await this.prisma.ticketUsage.create({
-      data: {
-        ticketId: ticketUsageDto.ticketId,
-        screeningId: ticketUsageDto.screeningId,
-      },
+    return await this.prisma.$transaction(async (tx) => {
+      await tx.screening.update({
+        where: { id: ticketUsageDto.screeningId },
+        data: {
+          nb_ticket: { increment: 1 },
+        },
+      });
+    
+      return tx.ticketUsage.create({
+        data: {
+          ticketId: ticketUsageDto.ticketId,
+          screeningId: ticketUsageDto.screeningId,
+        },
+      });
     });
   }
 }
