@@ -4,6 +4,7 @@ import {
   ConflictException,
   InternalServerErrorException,
   Logger,
+  HttpException,
 } from '@nestjs/common';
 import { CreateScreeningDTO } from './dto/create-screening.dto';
 import { UpdateScreeningDto } from './dto/update-screening.dto';
@@ -173,6 +174,7 @@ export class ScreeningService {
       });
       return updated;
     } catch (error) {
+      if (error instanceof HttpException) throw error;
       this.logger.error(`Error updating screening #${id}`, error.stack);
       throw new InternalServerErrorException('Failed to update screening');
     }

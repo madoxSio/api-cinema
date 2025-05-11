@@ -25,7 +25,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 import { Role } from '@prisma/client';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
 
 @ApiTags('Screenings')
 @ApiBearerAuth()
