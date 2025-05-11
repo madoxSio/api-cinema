@@ -4,7 +4,6 @@ import { TicketService } from './ticket.service';
 import { PrismaService } from '../prisma.service';
 import { CreateTicketDto, CreateTicketUsageDto, TypeTicket } from './dto/create-ticket.dto';
 import { Role } from '@prisma/client';
-import { Type } from 'class-transformer';
 
 describe('TicketController', () => {
   let controller: TicketController;
