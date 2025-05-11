@@ -15,7 +15,7 @@ export class MoneyService {
             this.logger.warn('User not found', id);
             throw new NotFoundException('User not found');
         }
-        return user.balance;
+        return { balance : user.balance };
     }
     
     async deposit(userId: string, amount: number) {

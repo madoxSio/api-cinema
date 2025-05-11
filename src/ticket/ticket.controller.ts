@@ -17,12 +17,16 @@ import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } 
 export class TicketController {
   constructor(private readonly ticketService: TicketService) {}
 
-  @ApiOperation({ summary: 'Buy a ticket (STANDARD or SUPER)' })
+  @Post('me')
+  @ApiOperation({ summary: 'Buy a ticket for the current user (STANDARD or SUPER)' })
   @ApiResponse({ status: 201, description: 'Ticket successfully purchased' })
   @ApiResponse({ status: 400, description: 'Insufficient funds or invalid data' })
-  @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
-    return this.ticketService.create(createTicketDto);
+  @ApiBody({ type: CreateTicketDto })
+  create(
+    @CurrentUser() user: JwtUser,
+    @Body() createTicketDto: CreateTicketDto,
+  ) {
+    return this.ticketService.create(createTicketDto, user.sub);
   }
 
   @Roles(Role.ADMIN)

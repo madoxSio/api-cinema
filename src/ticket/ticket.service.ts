@@ -13,43 +13,43 @@ export class TicketService {
   };
   constructor(private prisma: PrismaService) {}
   
-  async create(createTicketDto: CreateTicketDto) {
-    this.logger.log('Creating ticket', createTicketDto);
+  async create(createTicketDto: CreateTicketDto, userId: string) {
+    this.logger.log('Creating ticket', createTicketDto.type);
 
     const price = this.ticketPrice[createTicketDto.type];
 
     return await this.prisma.$transaction(async (tx) => {
       const user = await tx.user.findUnique({
-        where: { id: createTicketDto.userId },
+        where: { id: userId },
       });
 
       if (!user) {
-        this.logger.warn('User not found', createTicketDto.userId);
+        this.logger.warn('User not found', userId);
         throw new NotFoundException('User not found');
       }
 
       if (user.balance < price) {
-        this.logger.warn('Insufficient funds for ticket', createTicketDto.userId);
+        this.logger.warn('Insufficient funds for ticket', userId);
         throw new BadRequestException('Insufficient funds for ticket');
       }
 
       const ticket = await tx.ticket.create({
         data: {
-          userId: createTicketDto.userId,
+          userId: userId,
           type: createTicketDto.type,
         },
       });
 
       await tx.transaction.create({
         data: {
-          userId: createTicketDto.userId,
+          userId: userId,
           amount: -price,
           type: 'PURCHASE',
         },
       });
 
       await tx.user.update({
-        where: { id: createTicketDto.userId },
+        where: { id: userId },
         data: {
           balance: { decrement: price },
         },
