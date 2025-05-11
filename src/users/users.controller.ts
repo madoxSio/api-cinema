@@ -22,8 +22,8 @@ import {
 import { User } from './entities/user.entity';
 import { Role } from '@prisma/client';
 
-// @UseGuards(JwtAuthGuard, RolesGuard)
-// @Roles(Role.ADMIN)
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
