@@ -12,7 +12,7 @@ import { PrismaService } from '../prisma.service';
 export class MoviesService {
   private readonly logger = new Logger(MoviesService.name);
 
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   async create(createMovieDto: CreateMovieDto) {
     this.logger.log('This action adds a new movie');
@@ -58,7 +58,9 @@ export class MoviesService {
     } catch (error) {
       this.logger.error(`Error fetching movie #${id}`, error.stack);
       if (error instanceof NotFoundException) throw error;
-      throw new InternalServerErrorException('An error occurred while fetching the movie');
+      throw new InternalServerErrorException(
+        'An error occurred while fetching the movie',
+      );
     }
   }
 
@@ -108,13 +110,11 @@ export class MoviesService {
     }
   }
 
-
-  async getMovieOnPeriod(  start: string, end: string, movieTitle: string) {
-  
+  async getMovieOnPeriod(start: string, end: string, movieTitle: string) {
     const startDate = new Date(start);
     const endDate = new Date(end);
 
-    if(isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
       this.logger.error('Invalid date format!');
     }
 
@@ -137,7 +137,6 @@ export class MoviesService {
           gte: startDate,
           lte: endDate,
         },
-       
       },
       include: {
         movieTheater: true,
@@ -150,5 +149,3 @@ export class MoviesService {
     return screenings;
   }
 }
-
-

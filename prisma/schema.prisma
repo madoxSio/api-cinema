@@ -47,17 +47,18 @@ model Movie {
 }
 
 model Screening {
-  id          Int        @id @default(autoincrement())
-  start       String
-  end         String
-  date        DateTime
-  nb_ticket   Int
-  movieId     Int       
-  movie       Movie      @relation(fields: [movieId], references: [id])
-  movieTheaterId Int     
-  movieTheater MovieTheater @relation(fields: [movieTheaterId], references: [id])
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id             Int           @id @default(autoincrement())
+  start          String
+  end            String
+  date           DateTime
+  nb_ticket      Int
+  movieId        Int
+  movie          Movie         @relation(fields: [movieId], references: [id])
+  movieTheaterId Int
+  movieTheater   MovieTheater  @relation(fields: [movieTheaterId], references: [id])
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  TicketUsage    TicketUsage[]
 }
 
 model User {
@@ -69,6 +70,8 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   Ticket        Ticket[]
+  balance       Float          @default(0.0)
+  transactions  Transaction[]
 }
 
 model RefreshToken {
@@ -107,4 +110,19 @@ model TicketUsage {
 enum TicketType {
   STANDARD
   SUPER
+}
+
+model Transaction {
+  id        Int             @id @default(autoincrement())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id])
+  amount    Float
+  type      TransactionType
+  createdAt DateTime        @default(now())
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  PURCHASE
 }

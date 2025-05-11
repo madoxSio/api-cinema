@@ -16,6 +16,7 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiOperation,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 
 @Controller('auth')
@@ -77,6 +78,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post('logout')
   @HttpCode(200)
   @ApiOkResponse({

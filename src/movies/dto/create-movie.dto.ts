@@ -15,7 +15,8 @@ export class CreateMovieDto {
   title: string;
 
   @ApiProperty({
-    example: "C'est l'histoire d'un jeune homme qui se rend compte qu'il a des pouvoirs.",
+    example:
+      "C'est l'histoire d'un jeune homme qui se rend compte qu'il a des pouvoirs.",
   })
   @IsNotEmpty()
   @IsString()

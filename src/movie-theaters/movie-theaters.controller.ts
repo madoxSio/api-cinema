@@ -8,6 +8,7 @@ import {
   Delete,
   ValidationPipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { MovieTheatersService } from './movie-theaters.service';
 import {
@@ -22,8 +23,11 @@ import {
   ApiOkResponse,
   ApiOperation,
   ApiProperty,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
+import { GetTheaterScheduleDto } from './dto/get-theater-schedule.dto';
 
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('movie-theaters')
 export class MovieTheatersController {
@@ -115,5 +119,58 @@ export class MovieTheatersController {
   })
   remove(@Param('id') id: string) {
     return this.movieTheatersService.remove(+id);
+  }
+
+  @Get(':id/schedule')
+  @ApiOperation({
+    summary: 'Get movie theater schedule',
+    description: 'Get the schedule of a movie theater for a specific period',
+  })
+  @ApiOkResponse({
+    description: 'Movie theater schedule retrieved successfully',
+    schema: {
+      type: 'object',
+      properties: {
+        theater: {
+          type: 'object',
+          properties: {
+            id: { type: 'number' },
+            name: { type: 'string' },
+            description: { type: 'string' },
+            type: { type: 'string' },
+            capacity: { type: 'number' },
+            hasDisabledAccess: { type: 'boolean' },
+            isUnderMaintenance: { type: 'boolean' },
+          },
+        },
+        screenings: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'number' },
+              start: { type: 'string' },
+              end: { type: 'string' },
+              date: { type: 'string' },
+              movie: {
+                type: 'object',
+                properties: {
+                  id: { type: 'number' },
+                  title: { type: 'string' },
+                  description: { type: 'string' },
+                  duration: { type: 'number' },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  })
+  getTheaterSchedule(
+    @Param('id') id: string,
+    @Query(ValidationPipe) scheduleDto: GetTheaterScheduleDto,
+  ) {
+    return this.movieTheatersService.getTheaterSchedule(+id, scheduleDto);
   }
 }

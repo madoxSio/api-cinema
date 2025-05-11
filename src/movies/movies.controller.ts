@@ -9,19 +9,28 @@ import {
   HttpCode,
   ParseIntPipe,
   UseGuards,
-  Query
+  Query,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
-import { ApiTags, ApiOperation, ApiCreatedResponse, ApiOkResponse, ApiNotFoundResponse, ApiBadRequestResponse } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiNotFoundResponse,
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
 @ApiTags('Movies')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @Controller('movies')
 export class MoviesController {
-  constructor(private readonly moviesService: MoviesService) { }
+  constructor(private readonly moviesService: MoviesService) {}
 
   @Post()
   @HttpCode(201)
@@ -57,7 +66,6 @@ export class MoviesController {
     @Query('end') end: string,
     @Query('movieTitle') movieTitle: string,
   ) {
-
     return this.moviesService.getMovieOnPeriod(start, end, movieTitle);
   }
 
@@ -104,6 +112,4 @@ export class MoviesController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.moviesService.remove(id);
   }
-
-
 }

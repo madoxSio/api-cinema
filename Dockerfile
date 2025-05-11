@@ -1,5 +1,5 @@
 
-FROM node:latest
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -8,6 +8,8 @@ COPY package*.json ./
 COPY . .
 
 RUN npm install
+
+RUN npx prisma generate
 
 # Compiler le projet TypeScript
 RUN npm run build

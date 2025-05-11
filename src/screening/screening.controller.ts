@@ -30,13 +30,14 @@ import {
 @UseGuards(JwtAuthGuard)
 @Controller('screening')
 export class ScreeningController {
-  constructor(private readonly screeningService: ScreeningService) { }
+  constructor(private readonly screeningService: ScreeningService) {}
 
   @Post()
   @HttpCode(201)
   @ApiOperation({
     summary: 'Create a new screening',
-    description: 'Creates a new screening (movie showing) with date, time, and theater.',
+    description:
+      'Creates a new screening (movie showing) with date, time, and theater.',
   })
   @ApiCreatedResponse({
     description: 'Screening created successfully.',
@@ -53,7 +54,6 @@ export class ScreeningController {
   createMany(@Body() data: CreateScreeningDTO[]) {
     return this.screeningService.createMany(data);
   }
-
 
   @Get()
   @ApiOperation({
@@ -78,10 +78,7 @@ export class ScreeningController {
     type: [CreateScreeningDTO],
   })
   @ApiBadRequestResponse({ description: 'Invalid or missing date parameters.' })
-  async getPlanning(
-    @Query('start') start: string,
-    @Query('end') end: string,
-  ) {
+  async getPlanning(@Query('start') start: string, @Query('end') end: string) {
     return this.screeningService.getPlanning(start, end);
   }
 
@@ -91,7 +88,6 @@ export class ScreeningController {
   getNbTickets(@Param('id', ParseIntPipe) id: number) {
     return this.screeningService.getTickets(id);
   }
-
 
   @Get(':id')
   @ApiOperation({
@@ -136,7 +132,4 @@ export class ScreeningController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.screeningService.remove(id);
   }
-
-
-
 }

@@ -1,2 +1,1 @@
-export class MovieTheater 
-{}
+export class MovieTheater {}
