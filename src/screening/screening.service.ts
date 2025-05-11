@@ -26,10 +26,10 @@ export class ScreeningService {
       const theater = await this.prisma.movieTheater.findUnique({ where: { id: movieTheaterId } });
       if (!theater) throw new NotFoundException(`Theater with ID ${movieTheaterId} not found`);
 
-      const startDate = new Date(start); // start est censé être un string ISO mais mehlichhh
-      const endDate = addMinutes(startDate, movie.duration + 30); // durée + pub/nettoyage
+      const startDate = new Date(start);
+      const endDate = addMinutes(startDate, movie.duration + 30);
 
-      // Vérifie le chevauchement
+
       const conflict = await this.prisma.screening.findFirst({
         where: {
           movieTheaterId,
@@ -46,12 +46,17 @@ export class ScreeningService {
         throw new ConflictException(`Créneau occupé chef.`);
       }
 
+      const hour = startDate.getHours();
+      if (hour < 9 || hour >= 24) {
+        throw new ConflictException('Vous ne pouvez pas créer de séance en dehors des horaires (9h-00h).');
+      }
+
       const screening = await this.prisma.screening.create({
         data: {
           start: startDate.toISOString(),
           end: endDate.toISOString(),
           date: startDate.toISOString(),
-          nb_ticket : 0,
+          nb_ticket: 0,
           movieId,
           movieTheaterId,
         },
@@ -160,7 +165,6 @@ export class ScreeningService {
     }
 
     try {
-      // Filtrage manuel des champ pour évite les erreurs Prisma
       const { movieTheaterId, ...safeData } = updateDto;
 
       const updated = await this.prisma.screening.update({
