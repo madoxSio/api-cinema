@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { CreateMovieTheaterDto as CreateMovieTheaterDto } from './dto/create-movie-theater.dto';
 import { UpdateMovieTheaterDto as UpdateMovieTheaterDto } from './dto/update-movie-theater.dto';
 import { PrismaService } from '../prisma.service';
+import { GetTheaterScheduleDto } from './dto/get-theater-schedule.dto';
 
 @Injectable()
 export class MovieTheatersService {
@@ -153,5 +154,47 @@ export class MovieTheatersService {
     }
 
     return movieTheaterDeleted;
+  }
+
+  async getTheaterSchedule(id: number, scheduleDto: GetTheaterScheduleDto) {
+    const theater = await this.prisma.movieTheater.findUnique({
+      where: { id },
+    });
+
+    if (!theater) {
+      throw new NotFoundException(`Movie theater with ID ${id} not found`);
+    }
+
+    const startDate = new Date(scheduleDto.startDate);
+    const endDate = new Date(scheduleDto.endDate);
+
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      throw new Error('Invalid date format');
+    }
+
+    if (startDate > endDate) {
+      throw new Error('Start date must be before end date');
+    }
+
+    const screenings = await this.prisma.screening.findMany({
+      where: {
+        movieTheaterId: id,
+        date: {
+          gte: startDate,
+          lte: endDate,
+        },
+      },
+      include: {
+        movie: true,
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+
+    return {
+      theater,
+      screenings,
+    };
   }
 }

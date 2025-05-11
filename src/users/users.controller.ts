@@ -21,11 +21,13 @@ import {
   ApiOperation,
   ApiProperty,
   ApiResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Role } from '@prisma/client';
 import { CurrentUser, JwtUser } from 'src/auth/decorators/current-user.decorator';
 
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users')
 export class UsersController {
