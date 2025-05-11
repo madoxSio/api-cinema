@@ -24,6 +24,7 @@ import {
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Role } from '@prisma/client';
+import { CurrentUser, JwtUser } from 'src/auth/decorators/current-user.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
 //@Roles(Role.ADMIN)
@@ -97,14 +98,15 @@ export class UsersController {
   }
 
   @Roles(Role.CLIENT, Role.ADMIN)
+  @Get('me/tickets/usages')
+  getTicketUsages(@CurrentUser() user: JwtUser) {
+    return this.usersService.findAllTicketUsages(user.id);
+  }
+
+  @Roles(Role.CLIENT, Role.ADMIN)
   @Get(':id/tickets/usages')
   getMyTicketUsages(@Param('id') id: string) {
     return this.usersService.findAllTicketUsages(id);
-  }
-
-  @Get(':id/balance')
-  getBalance(@Param('id') id: string) {
-    return this.moneyService.getBalance(id);
   }
 
   @Post(':id/deposit')
@@ -115,5 +117,17 @@ export class UsersController {
   @Post(':id/withdraw')
   withdraw(@Param('id') id: string, @Body() body: MoneyActionDto) {
     return this.moneyService.withdraw(id, body.amount);
+  }
+
+  @Roles(Role.ADMIN ,Role.CLIENT)
+  @Get('me/balance')
+  getMyBalance(@CurrentUser() user: JwtUser) {
+    return this.moneyService.getBalance(user.sub);
+  }
+
+  @Roles(Role.ADMIN ,Role.CLIENT)
+  @Get(':id/balance')
+  getBalance(@Param('id') id: string) {
+    return this.moneyService.getBalance(id);
   }
 }
