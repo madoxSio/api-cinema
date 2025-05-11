@@ -6,13 +6,17 @@ import { MovieTheatersModule } from './movie-theaters/movie-theaters.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { TicketModule } from './ticket/ticket.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { MetricsInterceptor } from './metrics/metrics.interceptor';
-import { MetricsModule } from './metrics/metrics.module';
 import { MoneyService } from './money/money.service';
+import {
+  makeCounterProvider,
+  PrometheusModule,
+} from '@willsoto/nestjs-prometheus';
+import { MetricsInterceptor } from './metrics/metrics.interceptor';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
   imports: [
+    PrometheusModule.register(),
     PrismaModule,
     MovieTheatersModule,
     MoviesModule,
@@ -20,14 +24,18 @@ import { MoneyService } from './money/money.service';
     AuthModule,
     UsersModule,
     TicketModule,
-    MetricsModule,
   ],
   providers: [
+    MoneyService,
+    makeCounterProvider({
+      name: 'http_requests_total',
+      help: 'Nombre total de requêtes HTTP',
+      labelNames: ['method', 'path'],
+    }),
     {
       provide: APP_INTERCEPTOR,
       useClass: MetricsInterceptor,
     },
-    MoneyService,
   ],
 })
 export class AppModule {}
