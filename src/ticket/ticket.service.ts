@@ -63,7 +63,7 @@ export class TicketService {
     return await this.prisma.ticket.findMany();
   }
 
-  async findOne(id: number) {
+  async findOne(userId:string, id: number) {
     const ticket = await this.prisma.ticket.findUnique({
       where: { id },
     });
@@ -71,6 +71,10 @@ export class TicketService {
     if (!ticket) {
       this.logger.warn('Ticket not found', id);
       throw new NotFoundException('Ticket not found');
+    }
+    if(ticket.userId !== userId){
+      this.logger.warn('Ticket does not belong to user', ticket.id);
+      throw new ForbiddenException('Ticket does not belong to user');
     }
     return ticket;
   }

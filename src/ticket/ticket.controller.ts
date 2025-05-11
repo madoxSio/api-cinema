@@ -26,9 +26,15 @@ export class TicketController {
     return this.ticketService.findAll();
   }
 
-  @Get('me')
-  findOne(@Param('id') id: string) {
-    return this.ticketService.findOne(+id);
+  @Get('me/:id')
+  findOne(@CurrentUser() user: JwtUser, @Param('id') id: string) {
+    return this.ticketService.findOne(user.sub ,+id);
+  }
+
+  @Roles(Role.ADMIN)
+  @Get(':userId/:id')
+  adminFindOne(@Param('userId') userId: string, @Param('id') id: string) {
+    return this.ticketService.findOne(userId ,+id);
   }
 
   @Post('me/usage')
