@@ -45,7 +45,7 @@ export class MoneyService {
         if (!user) {
             throw new NotFoundException('User not found');
         }
-        
+
         if (user.balance < amount) {
             throw new BadRequestException('Insufficient funds');
         }
@@ -66,5 +66,16 @@ export class MoneyService {
             }),
         ]);
         return { newBalance : updatedUser.balance };
+    }
+
+    async getTransactions(userId: string) {
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+        return this.prisma.transaction.findMany({
+            where: { userId },
+            orderBy: { createdAt: 'desc' },
+        });
     }
 }

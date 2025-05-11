@@ -139,4 +139,15 @@ export class UsersController {
   getBalance(@Param('id') id: string) {
     return this.moneyService.getBalance(id);
   }
+
+  @Get('me/transactions')
+  getMyTransactions(@CurrentUser() user: JwtUser) {
+    return this.moneyService.getTransactions(user.sub);
+  }
+
+  @Roles(Role.ADMIN)
+  @Get(':id/transactions')
+  getTransactions(@Param('id') id: string) {
+    return this.moneyService.getTransactions(id);
+  }
 }
