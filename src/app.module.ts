@@ -9,6 +9,7 @@ import { TicketModule } from './ticket/ticket.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { MetricsInterceptor } from './metrics/metrics.interceptor';
 import { MetricsModule } from './metrics/metrics.module';
+import { MoneyService } from './money/money.service';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { MetricsModule } from './metrics/metrics.module';
       provide: APP_INTERCEPTOR,
       useClass: MetricsInterceptor,
     },
+    MoneyService,
   ],
 })
 export class AppModule {}
