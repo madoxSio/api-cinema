@@ -93,4 +93,35 @@ export class UsersService {
       where: { email },
     });
   }
+  async findAllTicketUsages(id: string){
+    this.logger.log('Finding all ticket usages for user', id);
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+    if (!user) {
+      this.logger.warn('User not found', id);
+      throw new NotFoundException('User not found');
+    }
+    const tickets = await this.prisma.ticket.findMany({
+      where: { 
+        userId: id,
+        usages: {
+          some: {}
+        },
+      },
+      include: {
+        usages: {
+          include: {
+            screening: {
+              include: {
+                movie: true,
+                movieTheater: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return tickets;
+  }
 }
