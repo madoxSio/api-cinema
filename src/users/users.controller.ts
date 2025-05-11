@@ -27,7 +27,6 @@ import { Role } from '@prisma/client';
 import { CurrentUser, JwtUser } from 'src/auth/decorators/current-user.decorator';
 
 @UseGuards(JwtAuthGuard, RolesGuard)
-//@Roles(Role.ADMIN)
 @Controller('users')
 export class UsersController {
   constructor(
@@ -97,35 +96,45 @@ export class UsersController {
     return this.usersService.update(id, updateUserDto);
   }
 
-  @Roles(Role.CLIENT, Role.ADMIN)
   @Get('me/tickets/usages')
-  getTicketUsages(@CurrentUser() user: JwtUser) {
+  getMyTicketUsages(@CurrentUser() user: JwtUser) {
     return this.usersService.findAllTicketUsages(user.id);
   }
 
-  @Roles(Role.CLIENT, Role.ADMIN)
+  @Roles(Role.ADMIN)
   @Get(':id/tickets/usages')
-  getMyTicketUsages(@Param('id') id: string) {
+  getTicketUsages(@Param('id') id: string) {
     return this.usersService.findAllTicketUsages(id);
   }
 
+  @Post('me/deposit')
+  deposit(@CurrentUser() user: JwtUser, @Body() body: MoneyActionDto) {
+    return this.moneyService.deposit(user.sub, body.amount);
+  }
+
+  @Roles(Role.ADMIN)
   @Post(':id/deposit')
-  deposit(@Param('id') id: string, @Body() body: MoneyActionDto) {
+  adminDeposit(@Param('id') id: string, @Body() body: MoneyActionDto) {
     return this.moneyService.deposit(id, body.amount);
   }
 
+  @Post('me/withdraw')
+  withdraw(@CurrentUser() user: JwtUser, @Body() body: MoneyActionDto) {
+    return this.moneyService.withdraw(user.sub, body.amount);
+  }
+
+  @Roles(Role.ADMIN)
   @Post(':id/withdraw')
-  withdraw(@Param('id') id: string, @Body() body: MoneyActionDto) {
+  adminWithdraw(@Param('id') id: string, @Body() body: MoneyActionDto) {
     return this.moneyService.withdraw(id, body.amount);
   }
 
-  @Roles(Role.ADMIN ,Role.CLIENT)
   @Get('me/balance')
   getMyBalance(@CurrentUser() user: JwtUser) {
     return this.moneyService.getBalance(user.sub);
   }
 
-  @Roles(Role.ADMIN ,Role.CLIENT)
+  @Roles(Role.ADMIN)
   @Get(':id/balance')
   getBalance(@Param('id') id: string) {
     return this.moneyService.getBalance(id);

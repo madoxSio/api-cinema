@@ -19,7 +19,11 @@ export class MoneyService {
     }
     
     async deposit(userId: string, amount: number) {
-        await this.prisma.$transaction([
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+        const [_, updatedUser] = await this.prisma.$transaction([
             this.prisma.transaction.create({
             data: {
                 userId,
@@ -34,17 +38,23 @@ export class MoneyService {
             },
             }),
         ]);
+        return { newBalance : updatedUser.balance };
     }
     async withdraw(userId: string, amount: number) {
         const user = await this.prisma.user.findUnique({ where: { id: userId } });
-        if (!user || user.balance < amount) {
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+        
+        if (user.balance < amount) {
             throw new BadRequestException('Insufficient funds');
         }
-        await this.prisma.$transaction([
+        
+        const [_, updatedUser] = await this.prisma.$transaction([
             this.prisma.transaction.create({
             data: {
                 userId,
-                amount,
+                amount: -amount,
                 type: 'WITHDRAWAL',
             },
             }),
@@ -55,5 +65,6 @@ export class MoneyService {
             },
             }),
         ]);
+        return { newBalance : updatedUser.balance };
     }
 }
