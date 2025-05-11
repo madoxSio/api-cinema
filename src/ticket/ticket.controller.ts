@@ -6,7 +6,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { Role } from '@prisma/client';
-import { CurrentUser, JwtUser } from 'src/auth/decorators/current-user.decorator';
+import { CurrentUser, JwtUser } from '../../src/auth/decorators/current-user.decorator';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 
