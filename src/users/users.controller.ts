@@ -104,7 +104,7 @@ export class UsersController {
   @ApiOperation({ summary: 'Get ticket usages for current user' })
   @ApiResponse({ status: 200, description: 'List of ticket usages' })
   getMyTicketUsages(@CurrentUser() user: JwtUser) {
-    return this.usersService.findAllTicketUsages(user.id);
+    return this.usersService.findAllTicketUsages(user.sub);
   }
 
   @Roles(Role.ADMIN)
