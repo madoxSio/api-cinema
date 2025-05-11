@@ -15,4 +15,6 @@ export class CreateTicketDto {
 export class CreateTicketUsageDto{
     @IsNumber({}, { message: 'movieTheaterId must be a number' })
     screeningId: number;
+    @IsNumber({}, { message: 'ticketId must be a number' })
+    ticketId: number
 }

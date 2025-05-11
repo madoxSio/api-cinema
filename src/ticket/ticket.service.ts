@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, BadRequestException, ForbiddenException } from '@nestjs/common';
 import { CreateTicketDto, CreateTicketUsageDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 import { PrismaService } from '../prisma.service';
@@ -75,14 +75,19 @@ export class TicketService {
     return ticket;
   }
   
-  async createTicketUsage(ticketUsageDto: CreateTicketUsageDto, ticketId: number) {
+  async createTicketUsage(userID: string, ticketUsageDto: CreateTicketUsageDto) {
     this.logger.log('Creating ticket usage', JSON.stringify(ticketUsageDto));
     const ticket = await this.prisma.ticket.findUnique({
-      where: { id: ticketId },
+      where: { id: ticketUsageDto.ticketId },
     });
+    
     if (!ticket) {
-      this.logger.warn('Ticket not found', ticketId);
+      this.logger.warn('Ticket not found', ticketUsageDto.ticketId);
       throw new NotFoundException('Ticket not found');
+    }
+    if(ticket.userId !== userID){
+      this.logger.warn('Ticket does not belong to user', ticketUsageDto.ticketId);
+      throw new ForbiddenException('Ticket does not belong to user');
     }
 
     const screening = await this.prisma.screening.findUnique({
@@ -96,43 +101,35 @@ export class TicketService {
     if(ticket.type === 'STANDARD'){
       const ticketUsage = await this.prisma.ticketUsage.findFirst({
         where: {
-          ticketId: ticketId,
+          ticketId: ticketUsageDto.ticketId,
         },
       });
       if (ticketUsage) {
-        this.logger.warn('A standard ticket can only be used once', ticketId);
+        this.logger.warn('A standard ticket can only be used once', ticketUsageDto.ticketId);
         throw new BadRequestException('A standard ticket can only be used once');
       }
     }
     else{
       const ticketUsages = await this.prisma.ticketUsage.findMany({
         where: {
-          ticketId: ticketId,
+          ticketId: ticketUsageDto.ticketId,
         },
       });
       if (ticketUsages && ticketUsages.length >= 10) {
-        this.logger.warn('A super ticket can only be used 10 times', ticketId);
+        this.logger.warn('A super ticket can only be used 10 times', ticketUsageDto.ticketId);
         throw new BadRequestException('A super ticket can only be used 10 times');
       }
       const alreadyUsed = ticketUsages.find(u => u.screeningId === ticketUsageDto.screeningId);
       if (alreadyUsed) {
-        this.logger.warn('Ticket usage already exists', ticketId);
+        this.logger.warn('Ticket usage already exists', ticketUsageDto.ticketId);
         throw new BadRequestException('Ticket usage already exists');
       }
     }
     return await this.prisma.ticketUsage.create({
       data: {
-        ticketId: ticketId,
+        ticketId: ticketUsageDto.ticketId,
         screeningId: ticketUsageDto.screeningId,
       },
     });
-  }
-
-  update(id: number, updateTicketDto: UpdateTicketDto) {
-    return `This action updates a #${id} ticket`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} ticket`;
   }
 }
