@@ -70,6 +70,8 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   Ticket        Ticket[]
+  balance       Float     @default(0.0)
+  transactions  Transaction[]
 }
 
 model RefreshToken {
@@ -108,4 +110,19 @@ model TicketUsage {
 enum TicketType {
   STANDARD
   SUPER
+}
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  amount    Float
+  type      TransactionType
+  createdAt DateTime @default(now())
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  PURCHASE
 }
