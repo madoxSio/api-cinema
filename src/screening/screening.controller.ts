@@ -24,6 +24,8 @@ import {
   ApiNotFoundResponse,
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @ApiTags('Screenings')
 @ApiBearerAuth()
@@ -32,6 +34,7 @@ import {
 export class ScreeningController {
   constructor(private readonly screeningService: ScreeningService) {}
 
+  @Roles(Role.ADMIN)
   @Post()
   @HttpCode(201)
   @ApiOperation({
@@ -48,6 +51,7 @@ export class ScreeningController {
     return this.screeningService.create(createScreeningDto);
   }
 
+  @Roles(Role.ADMIN)
   @Post('many')
   @ApiOperation({ summary: 'Insère plusieurs séances' })
   @ApiCreatedResponse({ description: 'Séances insérées' })
@@ -62,7 +66,7 @@ export class ScreeningController {
   })
   @ApiOkResponse({
     description: 'List of screenings retrieved successfully.',
-    type: [CreateScreeningDTO], // ou un DTO de réponse
+    type: [CreateScreeningDTO],
   })
   findAll() {
     return this.screeningService.findAll();
@@ -103,6 +107,7 @@ export class ScreeningController {
     return this.screeningService.findOne(id);
   }
 
+  @Roles(Role.ADMIN)
   @Patch(':id')
   @ApiOperation({
     summary: 'Update a screening',
@@ -121,6 +126,7 @@ export class ScreeningController {
     return this.screeningService.update(id, updateScreeningDto);
   }
 
+  @Roles(Role.ADMIN)
   @Delete(':id')
   @HttpCode(200)
   @ApiOperation({

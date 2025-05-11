@@ -24,6 +24,8 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { Role } from '@prisma/client';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 
 @ApiTags('Movies')
 @ApiBearerAuth()
@@ -32,6 +34,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 export class MoviesController {
   constructor(private readonly moviesService: MoviesService) {}
 
+  @Roles(Role.ADMIN)
   @Post()
   @HttpCode(201)
   @ApiOperation({
@@ -83,6 +86,7 @@ export class MoviesController {
     return this.moviesService.findOne(id);
   }
 
+  @Roles(Role.ADMIN)
   @Patch(':id')
   @ApiOperation({
     summary: 'Update a movie',
@@ -101,6 +105,7 @@ export class MoviesController {
     return this.moviesService.update(id, updateMovieDto);
   }
 
+  @Roles(Role.ADMIN)
   @Delete(':id')
   @HttpCode(200)
   @ApiOperation({
