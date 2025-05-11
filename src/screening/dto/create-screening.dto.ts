@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsInt, IsNotEmpty } from 'class-validator';
+import { IsDateString, IsInt } from 'class-validator';
 
 export class CreateScreeningDTO {
   @ApiProperty({ example: '2025-05-06T10:00:00.000Z' })

@@ -2,7 +2,6 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsInt,
   IsNotEmpty,
-  IsPositive,
   IsString,
   Max,
   Min,
@@ -16,7 +15,8 @@ export class CreateMovieDto {
   title: string;
 
   @ApiProperty({
-    example: "C'est l'histoire d'un jeune homme qui se rend compte qu'il a des pouvoirs.",
+    example:
+      "C'est l'histoire d'un jeune homme qui se rend compte qu'il a des pouvoirs.",
   })
   @IsNotEmpty()
   @IsString()
