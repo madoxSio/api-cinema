@@ -5,6 +5,15 @@
   NothingBetterThanAL API
 </p>
 
+## 🌐 Public API URL
+
+The API is deployed and accessible at:
+
+👉 **https://api-cinema-rjku.onrender.com/api**
+
+This includes the Swagger documentation, which provides all available endpoints, input formats, and expected responses.
+
+
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your `.env` file, take example from `.env.example`.
