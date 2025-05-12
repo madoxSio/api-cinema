@@ -27,7 +27,10 @@ import {
 } from '@nestjs/swagger';
 import { User } from './entities/user.entity';
 import { Role } from '@prisma/client';
-import { CurrentUser, JwtUser } from 'src/auth/decorators/current-user.decorator';
+import {
+  CurrentUser,
+  JwtUser,
+} from '../auth/decorators/current-user.decorator';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -35,7 +38,7 @@ import { CurrentUser, JwtUser } from 'src/auth/decorators/current-user.decorator
 export class UsersController {
   constructor(
     private readonly usersService: UsersService,
-    private readonly moneyService: MoneyService
+    private readonly moneyService: MoneyService,
   ) {}
 
   @Get()
@@ -109,7 +112,9 @@ export class UsersController {
 
   @Roles(Role.ADMIN)
   @Get(':id/tickets/usages')
-  @ApiOperation({ summary: 'Get ticket usages for a specific user (admin only)' })
+  @ApiOperation({
+    summary: 'Get ticket usages for a specific user (admin only)',
+  })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiResponse({ status: 200, description: 'List of ticket usages' })
   getTicketUsages(@Param('id') id: string) {
@@ -118,7 +123,10 @@ export class UsersController {
 
   @Post('me/deposit')
   @ApiOperation({ summary: 'Deposit money into your account' })
-  @ApiResponse({ status: 201, description: 'Deposit successful, new balance returned' })
+  @ApiResponse({
+    status: 201,
+    description: 'Deposit successful, new balance returned',
+  })
   deposit(@CurrentUser() user: JwtUser, @Body() body: MoneyActionDto) {
     return this.moneyService.deposit(user.sub, body.amount);
   }
@@ -128,14 +136,20 @@ export class UsersController {
   @ApiOperation({ summary: 'Deposit money into a user account (admin only)' })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiBody({ type: MoneyActionDto })
-  @ApiResponse({ status: 201, description: 'Deposit successful, new balance returned' })
+  @ApiResponse({
+    status: 201,
+    description: 'Deposit successful, new balance returned',
+  })
   adminDeposit(@Param('id') id: string, @Body() body: MoneyActionDto) {
     return this.moneyService.deposit(id, body.amount);
   }
 
   @Post('me/withdraw')
   @ApiOperation({ summary: 'Withdraw money from your account' })
-  @ApiResponse({ status: 201, description: 'Withdrawal successful, new balance returned' })
+  @ApiResponse({
+    status: 201,
+    description: 'Withdrawal successful, new balance returned',
+  })
   @ApiResponse({ status: 400, description: 'Insufficient funds' })
   @ApiBody({ type: MoneyActionDto })
   withdraw(@CurrentUser() user: JwtUser, @Body() body: MoneyActionDto) {
@@ -147,7 +161,10 @@ export class UsersController {
   @ApiOperation({ summary: 'Withdraw money from a user account (admin only)' })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiBody({ type: MoneyActionDto })
-  @ApiResponse({ status: 201, description: 'Withdrawal successful, new balance returned' })
+  @ApiResponse({
+    status: 201,
+    description: 'Withdrawal successful, new balance returned',
+  })
   adminWithdraw(@Param('id') id: string, @Body() body: MoneyActionDto) {
     return this.moneyService.withdraw(id, body.amount);
   }
@@ -177,7 +194,9 @@ export class UsersController {
 
   @Roles(Role.ADMIN)
   @Get(':id/transactions')
-  @ApiOperation({ summary: 'Get transaction history of a specific user (admin only)' })
+  @ApiOperation({
+    summary: 'Get transaction history of a specific user (admin only)',
+  })
   @ApiParam({ name: 'id', description: 'User ID' })
   @ApiResponse({ status: 200, description: 'List of transactions' })
   getTransactions(@Param('id') id: string) {
