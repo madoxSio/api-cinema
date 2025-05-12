@@ -9,6 +9,9 @@ import {
 } from 'class-validator';
 
 export class CreateMovieDto {
+  @IsInt()
+  id: number
+
   @ApiProperty({ example: 'Spider-Man 3' })
   @IsNotEmpty()
   @IsString()
